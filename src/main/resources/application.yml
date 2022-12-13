@@ -1,0 +1,25 @@
+application:
+  id: togaether
+  version: 1.0
+
+spring:
+  application:
+    name: togaether
+  profiles:
+    active: local
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  jpa:
+    open-in-view: false # Open Session in View
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+      base-path: "/config"
+  endpoint:
+    health:
+      show-details: always
+
+

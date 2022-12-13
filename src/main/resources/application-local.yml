@@ -1,0 +1,42 @@
+
+spring:
+  main:
+    allow-circular-references: true
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
+  datasource:
+    url: jdbc:mariadb://192.168.0.151:33330/dashboard?autoReconnect=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: user
+    password: 1234
+    driver-class-name: org.mariadb.jdbc.Driver
+  flyway:
+    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: busrefresh, env, metrics, shutdown, info, health, beans
+      base-path: /config
+
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
+    reactor:
+      netty: DEBUG
+#    io.bigin: DEBUG
+#    io.bigin.cdp.auth.client: DEBUG
+
+server:
+  port: 8080
+
+token:
+  secret: 'a05*B2XlaS%Lr8t0SB*781SbEyQN3I%G'
