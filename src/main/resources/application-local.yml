@@ -4,16 +4,16 @@ spring:
     allow-circular-references: true
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: true
         format_sql: true
     database-platform: org.hibernate.dialect.MariaDB103Dialect
   datasource:
-    url: jdbc:mariadb://192.168.0.151:33330/dashboard?autoReconnect=true&characterEncoding=UTF-8&serverTimezone=UTC
-    username: user
-    password: 1234
+    url: jdbc:mariadb://192.168.0.83:33306/demo?autoReconnect=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: password
     driver-class-name: org.mariadb.jdbc.Driver
   flyway:
     enabled: false
@@ -40,3 +40,9 @@ server:
 
 token:
   secret: 'a05*B2XlaS%Lr8t0SB*781SbEyQN3I%G'
+  access:
+    expiration_time: 3600
+  refresh:
+    expiration_time: 86400
+  issuer: TOGAETHER
+  audience: USER

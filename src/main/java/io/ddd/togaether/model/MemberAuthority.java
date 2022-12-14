@@ -11,36 +11,43 @@ import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.ToString;
-import lombok.ToString.Exclude;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
- * create on 2022/12/11. create by IntelliJ IDEA.
+ * create on 2022/12/14. create by IntelliJ IDEA.
  *
  * <p> 클래스 설명 </p>
- * <p> {@link } and {@link }관련 클래스 </p>
  *
- * @author Jongsang Han(Henry)
+ * @author Jongsang Han(henry)
  * @version 1.0
  * @see
  * @since 1.0
  */
 @Entity
 @Getter
-@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PetImage {
+@ToString(callSuper = true)
+public class MemberAuthority implements GrantedAuthority {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "pet_id")
-  @ToString.Exclude
-  private Pet pet;
+  @JoinColumn(name = "member_id", nullable = false)
+  private Member member;
 
-  @Column
-  private String path;
+  /**
+   * 권한.
+   */
+  @Column(nullable = false)
+  private String authority;
 
+
+  public MemberAuthority(@NonNull Member member, @NonNull String authority) {
+    this.member = member;
+    this.authority = authority;
+  }
 }

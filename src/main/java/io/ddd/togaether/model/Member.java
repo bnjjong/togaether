@@ -12,8 +12,10 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.ToString;
 
 /**
@@ -47,12 +49,27 @@ public class Member {
   private String name;
 
 
+  @Column
   private LocalDate birth;
 
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
   @ToString.Exclude
   private List<Pet> pets;
 
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
+  @ToString.Exclude
+  private List<MemberAuthority> authorities;
 
 
+  @Builder
+  public Member(@NonNull String email, @NonNull String password, @NonNull String name,
+      LocalDate birth, List<Pet> pets,
+      List<MemberAuthority> authorities) {
+    this.email = email;
+    this.password = password;
+    this.name = name;
+    this.birth = birth;
+    this.pets = pets;
+    this.authorities = authorities;
+  }
 }

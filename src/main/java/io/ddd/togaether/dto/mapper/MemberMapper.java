@@ -4,6 +4,7 @@ import io.ddd.togaether.dto.MemberDto;
 import io.ddd.togaether.model.Member;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 /**
@@ -21,5 +22,5 @@ public interface MemberMapper extends GenericMapper<MemberDto, Member> {
 
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   @Override
-  Member updateFromDto(MemberDto dto, Member entity);
+  Member updateFromDto(MemberDto dto, @MappingTarget Member entity);
 }

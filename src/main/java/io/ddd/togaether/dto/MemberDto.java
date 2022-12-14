@@ -1,11 +1,13 @@
 package io.ddd.togaether.dto;
 
+import static lombok.AccessLevel.PACKAGE;
+
+import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.time.LocalDate;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * create on 2022/12/11. create by IntelliJ IDEA.
@@ -18,10 +20,10 @@ import lombok.extern.slf4j.Slf4j;
  * @see
  * @since 1.0
  */
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
-@Slf4j
+@NoArgsConstructor(access = PACKAGE)
+@JsonNaming(SnakeCaseStrategy.class)
 public class MemberDto {
   private Long id;
   private String email;

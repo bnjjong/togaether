@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.AccessLevel;
@@ -56,6 +57,9 @@ public class Pet {
 
   @Column
   private LocalDate birth;
+
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private PetImage mainImage;
 
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pet")
   @ToString.Exclude
