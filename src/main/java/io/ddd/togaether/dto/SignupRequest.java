@@ -2,7 +2,6 @@ package io.ddd.togaether.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -38,7 +37,7 @@ public class SignupRequest {
   private String email;
 
   /**
-   * 비밀번호.
+   * 비밀 번호.
    */
   @NotBlank(message = "A \"password\" field is missing or its value is blank.")
   @Pattern(regexp = "^[a-zA-Z\\d~!@#$%^&*()_+|<>?:{}]{8,20}$",

@@ -3,6 +3,8 @@ package io.ddd.togaether.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.AccessLevel;
@@ -43,23 +44,27 @@ public class Pet {
   @JoinColumn(name = "member_id")
   @ToString.Exclude
   private Member owner;
+
   @Column
   private String name;
 
-  @Column(nullable = true)
+  @Column
+  @Enumerated(EnumType.STRING)
   private Species species;
 
   @Column
-  private Character character;
+  @Enumerated(EnumType.STRING)
+  private Character petCharacter;
 
   @Column
+  @Enumerated(EnumType.STRING)
   private Gender gender;
 
   @Column
   private LocalDate birth;
 
-  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  private PetImage mainImage;
+//  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//  private PetImage mainImage;
 
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pet")
   @ToString.Exclude
