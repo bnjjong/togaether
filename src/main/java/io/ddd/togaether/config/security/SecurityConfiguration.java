@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -57,11 +58,8 @@ public class SecurityConfiguration {
             UsernamePasswordAuthenticationFilter.class)
         .authorizeHttpRequests()
         .requestMatchers("/config/**").permitAll()
-//        .antMatchers("/admin/**").permitAll()
-//        .antMatchers(HttpMethod.POST, "/admin").permitAll() // 회원 가입
         .requestMatchers("/system/hc").permitAll()
-        .requestMatchers("/etc/**").permitAll()
-        .requestMatchers("/company/**").hasAuthority("ADMIN")
+        .requestMatchers(HttpMethod.POST, "/member").permitAll() //회원 가입
         .anyRequest().authenticated()
         .and()
         .exceptionHandling()

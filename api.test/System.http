@@ -1,0 +1,2 @@
+### hc
+GET {{host}}:{{port}}/system/hc

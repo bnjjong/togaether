@@ -4,10 +4,12 @@ import io.ddd.togaether.dao.MemberRepository;
 import io.ddd.togaether.dto.MemberDto;
 import io.ddd.togaether.dto.SignupRequest;
 import io.ddd.togaether.dto.mapper.MemberMapper;
+import io.ddd.togaether.model.AuthGrade;
 import io.ddd.togaether.model.Member;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +32,22 @@ public class MemberService {
   private final MemberRepository repository;
   private final MemberMapper mapper;
 
+  private final PasswordEncoder passwordEncoder;
+
+
+  @Transactional
   public MemberDto create(SignupRequest request) {
-    return null;
+    Member newMember = Member.builder()
+        .email(request.getEmail())
+        .password(passwordEncoder.encode(request.getPassword()))
+        .name(request.getName())
+        .birth(request.getBirth())
+        .build();
+
+    Member member = repository.save(newMember);
+    member.addAuthority(AuthGrade.NORMAL);
+
+    return mapper.toDto(member);
   }
 
   public MemberDto findByEmail(String email) {

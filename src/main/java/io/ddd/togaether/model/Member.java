@@ -71,4 +71,8 @@ public class Member {
     this.pets = pets;
     this.authorities = authorities;
   }
+
+  public void addAuthority(AuthGrade authGrade) {
+    this.authorities = List.of(new MemberAuthority(this, authGrade.toString()));
+  }
 }

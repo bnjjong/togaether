@@ -1,0 +1,10 @@
+### 회원 가입
+POST {{host}}:{{port}}/member
+Content-Type: application/json
+
+{
+  "email": "jongsang@naver.com",
+  "password": "abcd!23$",
+  "name": "한종상",
+  "birth": "1985-06-19"
+}
