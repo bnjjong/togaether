@@ -15,8 +15,10 @@ import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.ToString;
 
 /**
@@ -63,8 +65,8 @@ public class Pet {
   @Column
   private LocalDate birth;
 
-//  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//  private PetImage mainImage;
+  @Column
+  private String mainImage;
 
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pet")
   @ToString.Exclude
@@ -74,4 +76,15 @@ public class Pet {
   private int likeCount = 0;
 
 
+  @Builder
+  public Pet(@NonNull Member owner, @NonNull String name, @NonNull Species species, @NonNull Character petCharacter, @NonNull Gender gender,
+      LocalDate birth, String mainImagePath) {
+    this.owner = owner;
+    this.name = name;
+    this.species = species;
+    this.petCharacter = petCharacter;
+    this.gender = gender;
+    this.birth = birth;
+    this.mainImage = mainImagePath;
+  }
 }

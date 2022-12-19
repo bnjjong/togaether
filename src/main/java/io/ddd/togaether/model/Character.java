@@ -12,4 +12,5 @@ package io.ddd.togaether.model;
  * @since 1.0
  */
 public enum Character {
+  TEST
 }

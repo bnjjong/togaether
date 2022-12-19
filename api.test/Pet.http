@@ -1,0 +1,24 @@
+### 펫 등록
+POST {{host}}:{{port}}/pet
+Content-Type: multipart/form-data; boundary=boundary;
+
+--boundary
+Content-Disposition: form-data; name="main_image"; filename="retriever.png";
+
+< retriever.png
+
+--boundary
+Content-Disposition: form-data; name="pet_upload";
+Content-Type: application/json
+
+{
+  "name": "뽀미",
+  "species": "NULL",
+  "pet_character": "TEST",
+  "gender": "MALE",
+  "birth": "2022-01-01"
+}
+
+### 회원 조회
+GET {{host}}:{{port}}/member/jongsang@naver.com
+Content-Type: application/json

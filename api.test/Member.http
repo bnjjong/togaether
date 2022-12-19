@@ -8,3 +8,7 @@ Content-Type: application/json
   "name": "한종상",
   "birth": "1985-06-19"
 }
+
+### 회원 조회
+GET {{host}}:{{port}}/member/jongsang@naver.com
+Content-Type: application/json
