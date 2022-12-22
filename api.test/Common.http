@@ -1,0 +1,8 @@
+### 종(개) 조회
+GET {{host}}:{{port}}/common/species-all
+Content-Type: application/json
+
+
+### 종(개) 키워드 조회
+GET {{host}}:{{port}}/common/species/그레이트
+Content-Type: application/json

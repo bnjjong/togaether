@@ -1,5 +1,6 @@
 package io.ddd.togaether.model;
 
+import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -123,141 +124,131 @@ public enum Species {
   SHIKOKU_KEN("시코쿠견", "Shikoku ken","ㅅ"),
   SEALYHAM_TERRIER("실리엄 테리어", "Sealyham terrier","ㅅ"),
   SILKY_TERRIER("실키 테리어", "Silky terrier","ㅅ"),
-
-//  아나톨리아 셰퍼드	Anatolian Shepherd
-//  아메리칸 불도그	American Bulldog
-//  아메리칸 불리	American Bully
-//  아메리칸 스태퍼드셔 테리어	American Staffordshire Terrier
-//  아메리칸 아키다	American Akita
-//  아메리칸 에스키모 도그	American Eskimo Dog
-//  아메리칸 워터 스패니얼	American Water Spaniel
-//  아메리칸 코커 스패니얼	American Cocker Spaniel
-//  아메리칸 폭스하운드	American Foxhound
-//  아이디	Aidi
-//  아이리시 소프트코티드 휘튼 테리어	Soft-coated Wheaten Terrier
-//  아이리시 레드 앤드 화이트 세터	Irish Red and White Setter
-//  아이리시 세터	Irish setter
-//  아이리시 울프 하운드	Irish Wolfhound
-//  아이리시 워터 스패니얼	Irish Water Spaniel
-//  아이리시 테리어	Irish Terrier
-//  아키타	Akita Inu
-//  아펜핀셔	Affenpinscher
-//  아프간 하운드	Afghan Hound
-//  알래스칸 맬러뮤트	Alaskan Malamute
-//  알래스칸 클리카이	Alaskan Klee Kai
-//  에스트렐라 마운틴 독	Estrela Mountain Dog
-//  에어데일 테리어	Airedale Terrier
-//  오브차카	Ovcharka
-//  오스트레일리안 실키 테리어	Australian Silky Terrier
-//  오스트레일리안 켈피	Australian Kelpie
-//  오스트레일리언 셰퍼드	Australian Shepherd
-//  오스트레일리언 캐틀 도그	Australian Cattle Dog
-//  오스트레일리언 테리어	Australian Terrier
-//  오터 하운드	Otterhound
-//  올드 잉글리시 쉽독	Old English Sheepdog
-//  와이머라너	Weimaraner
-//  와이어 폭스 테리어	Wire Fox Terrier
-//  와이어헤어드 포인팅 그리펀	Wirehaired Pointing Griffon
-//  야쿠탄 라이카	Yakutian Laika
-//  요크셔 테리어	Yorkshire Terrier
-//  웨스트 하이랜드 화이트테리어	West Highland White Terrier
-//  웰시 스프링어 스패니얼	Welsh Springer Spaniel
-//  웰시 코기	Welsh Corgi
-//  웰시 테리어	Welsh Terrier
-//  이비전 하운드	Ibizan Hound
-//  이탤리언 그레이하운드	Italian Greyhound
-//  잉글리시 세터	English Setter
-//  잉글리시 스프링어 스패니얼	English Springer Spaniel
-//  잉글리시 코커 스패니얼	English Cocker Spaniel
-//  잉글리시 토이 스패니얼	English Toy Spaniel
-//  잉글리시 폭스하운드	English Foxhound
-//
-//  ㅈ
-//  자이언트 슈나우저	Giant Schnauzer
-//  재패니즈 친	Japanese Chin
-//  재패니즈 스피츠	Japanese Spitz
-//  잭 러셀 테리어	Jack Russell Terrier
-//  저먼 셰퍼드	German Shepherd
-//  저먼 쇼트헤어드 포인터	German Shorthaired Pointer
-//  저먼 와이어헤어드 포인터	German Wirehaired Pointer
-//  저먼 핀셔	German Pinscher
-//  저먼 헌팅 테리어	German Hunting Terrier
-//  제주개	Jeju dog
-//  진돗개	Korean Jindo
-//
-//      ㅊ
-//  차우차우	Chow Chow
-//  차이니즈 샤페이	Chinese Shares-pei
-//  차이니즈 크레스티드	Chinese Crested Dog
-//  체서피크 베이 레트리버	Chesapeake Bay Retriever
-//  체코슬로바키아 늑대개	Czechoslovakian Wolfdog
-//  치와와	Chihuahua
-//
-//  ㅋ
-//  카네 코르소	Cane corso
-//  카디건 웰시 코기	Cardigan Welsh Corgi
-//  카발리에 킹 찰스 스파니엘	Cavalier King Charles Spaniel
-//  캉갈	Kangal Shepherd Dog
-//  컬리코티드 레트리버	Curly-coated retriever
-//  케리 블루 테리어	Kerry Blue Terrier
-//  케언 테리어	Cairn Terrier
-//  케이넌 도그	Canaan Dog
-//  케이스혼트	Keeshond
-//  코리안 마스티프	Korean Mastiff
-//  코몬도르	Komondor
-//  코커 스패니얼	Cocker Spaniel
-//  콜리	Collie
-//  쿠바스	Kuvasz
-//  쿠이커혼제	Kooikerhondje
-//  클럼버 스패니얼	Clumber Spaniel
-//
-//  ㅌ
-//  토이 폭스 테리어	Toy Fox Terrier
-//  티베탄 마스티프	Tibetan Mastiff
-//  티베탄 스패니얼	Tibetan spaniel
-//  티베탄 테리어	Tibetan Terrier
-//
-//  ㅍ
-//  파라오 하운드	Pharaoh Hound
-//  파슨 러셀 테리어	Parson Russell Terrier
-//  파피용	Papillon
-//  패터데일 테리어	Patterdale Terrier
-//  퍼그	Pug
-//  페키니즈	Pekingese
-//  펨브록 웰시 코기	Pembroke Welsh Corgi
-//  포르투기즈 워터 도그	Portuguese Water Dog
-//  포메라니안	Pomeranian
-//  포인터	Pointer
-//  폭스 테리어	Fox Terrier
-//  폴리시 롤런드 시프도그	Polish Lowland Sheepdog
-//  폼피츠	pompitz
-//  푸들	Puddle
-//  푸미	Pumi
-//  풀리	Puli dog
-//  풍산개	Poongsan
-//  프렌치 불도그	French Bulldog
-//  프티 바세 그리퐁 방댕	Petit Basset Griffon Vendéen
-//  플랫코티드 레트리버	Flat-coated Retriever
-//  플롯 하운드	Plott Hound
-//  피니시 스피츠	Finnish Spitz
-//  피레니안 마스티프	Pyrenean Mastiff
-//  피레니안 쉽독	Pyrenean Sheepdog
-//  피레니언 셰퍼드	Pyrenean Shepherd Dog
-//  필드 스패니얼	Field Spaniel
-//  필라 브라질레이로	Fila Brasileiro
-//  핏 불 테리어	Pit bull
-//
-//      ㅎ
-//  해리어	Harrier
-//  하바니즈	Havanese
-//  홋카이도 이누	Hokkaido Dog
-//  휘핏	Whippet
+  ANATOLIAN_SHEPHERD("아나톨리아 셰퍼드", "Anatolian shepherd","ㅇ"),
+  AMERICAN_BULLDOG("아메리칸 불도그", "American bulldog","ㅇ"),
+  AMERICAN_BULLY("아메리칸 불리", "American bully","ㅇ"),
+  AMERICAN_STAFFORDSHIRE_TERRIER("아메리칸 스태퍼드셔 테리어", "American staffordshire terrier","ㅇ"),
+  AMERICAN_AKITA("아메리칸 아키다", "American akita","ㅇ"),
+  AMERICAN_ESKIMO_DOG("아메리칸 에스키모 도그", "American eskimo dog","ㅇ"),
+  AMERICAN_WATER_SPANIEL("아메리칸 워터 스패니얼", "American water spaniel","ㅇ"),
+  AMERICAN_COCKER_SPANIEL("아메리칸 코커 스패니얼", "American cocker spaniel","ㅇ"),
+  AMERICAN_FOXHOUND("아메리칸 폭스하운드", "American foxhound","ㅇ"),
+  AIDI("아이디", "Aidi","ㅇ"),
+  IRISH_SOFT_COATED_WHEATEN_TERRIER("아이리시 소프트코티드 휘튼 테리어", "Irish soft coated wheaten terrier","ㅇ"),
+  IRISH_RED_AND_WHITE_SETTER("아이리시 레드 앤드 화이트 세터", "Irish red and white setter","ㅇ"),
+  IRISH_SETTER("아이리시 세터", "Irish setter","ㅇ"),
+  IRISH_WOLF_HOUND("아이리시 울프 하운드", "Irish wolf hound","ㅇ"),
+  IRISH_WATER_SPANIEL("아이리시 워터 스패니얼", "Irish water spaniel","ㅇ"),
+  IRISH_TERRIER("아이리시 테리어", "Irish terrier","ㅇ"),
+  AKITA_INU("아키타 이누", "Akita inu","ㅇ"),
+  AFFENPINSCHER("아펜핀셔", "Affenpinscher","ㅇ"),
+  AFGHAN_HOUND("아프간 하운드", "Afghan hound","ㅇ"),
+  ALASKAN_MALAMUTE("알래스칸 맬러뮤트", "Alaskan malamute","ㅇ"),
+  ALASKAN_KLEE_KAI("알래스칸 클리 카이", "Alaskan klee kai","ㅇ"),
+  ESTRELA_MOUNTAIN_DOG("에스트렐라 마운틴 독", "Estrela mountain dog","ㅇ"),
+  AIREDALE_TERRIER("에어데일 테리어", "Airedale terrier","ㅇ"),
+  OVCHARKA("오브차카", "Ovcharka","ㅇ"),
+  AUSTRALIAN_SILKY_TERRIER("오스트레일리안 실키 테리어", "Australian silky terrier","ㅇ"),
+  AUSTRALIAN_KELPIE("오스트레일리안 켈피", "Australian Kelpie","ㅇ"),
+  AUSTRALIAN_SHEPHERD("오스트레일리언 셰퍼드", "Australian shepherd","ㅇ"),
+  AUSTRALIAN_CATTLE_DOG("오스트레일리언 캐틀 도그", "Australian cattle dog","ㅇ"),
+  AUSTRALIAN_TERRIER("오스트레일리언 테리어", "Australian terrier","ㅇ"),
+  OTTER_HOUND("오터 하운드", "Otter hound","ㅇ"),
+  OLD_ENGLISH_SHEEPDOG("올드 잉글리시 쉽독", "Old english sheepdog","ㅇ"),
+  WEIMARANER("와이머라너", "Weimaraner","ㅇ"),
+  WIRE_FOX_TERRIER("와이어 폭스 테리어", "Wire fox terrier","ㅇ"),
+  WIREHAIRED_POINTING_GRIFFON("와이어헤어드 포인팅 그리펀", "Wirehaired pointing griffon","ㅇ"),
+  YAKUTIAN_LAIKA("야쿠탄 라이카", "Yakutian laika","ㅇ"),
+  YORKSHIRE_TERRIER("요크셔 테리어", "Yorkshire terrier","ㅇ"),
+  WEST_HIGHLAND_WHITE_TERRIER("웨스트 하이랜드 화이트테리어", "West highland white terrier","ㅇ"),
+  WELSH_SPRINGER_SPANIEL("웰시 스프링어 스패니얼", "Welsh springer spaniel","ㅇ"),
+  WELSH_CORGI("웰시 코기", "Welsh corgi","ㅇ"),
+  WELSH_TERRIER("웰시 테리어", "Welsh terrier","ㅇ"),
+  IBIZAN_HOUND("이비전 하운드", "Ibizan hound","ㅇ"),
+  ITALIAN_GREYHOUND("이탤리언 그레이하운드", "Italian greyhound","ㅇ"),
+  ENGLISH_SETTER("잉글리시 세터", "English setter","ㅇ"),
+  ENGLISH_SPRINGER_SPANIEL("잉글리시 스프링어 스패니얼", "English springer spaniel","ㅇ"),
+  ENGLISH_COCKER_SPANIEL("잉글리시 코커 스패니얼", "English Cocker Spaniel","ㅇ"),
+  ENGLISH_TOY_SPANIEL("잉글리시 토이 스패니얼", "English toy spaniel","ㅇ"),
+  ENGLISH_FOXHOUND("잉글리시 폭스하운드", "English foxhound","ㅇ"),
+  GIANT_SCHNAUZER("자이언트 슈나우저", "Giant schnauzer","ㅈ"),
+  JAPANESE_CHIN("재패니즈 친", "Japanese chin","ㅈ"),
+  JAPANESE_SPITZ("재패니즈 스피츠", "Japanese spitz","ㅈ"),
+  JACK_RUSSELL_TERRIER("잭 러셀 테리어", "Jack russell terrier","ㅈ"),
+  GERMAN_SHEPHERD("저먼 셰퍼드", "German shepherd","ㅈ"),
+  GERMAN_SHORTHAIRED_POINTER("저먼 쇼트헤어드 포인터", "German shorthaired pointer","ㅈ"),
+  GERMAN_WIREHAIRED_POINTER("저먼 와이어헤어드 포인터", "German wirehaired pointer","ㅈ"),
+  GERMAN_PINSCHER("저먼 핀셔", "German pinscher","ㅈ"),
+  GERMAN_HUNTING_TERRIER("저먼 헌팅 테리어", "German hunting terrier","ㅈ"),
+  JEJU_DOG("제주개", "Jeju dog","ㅈ"),
+  JINDO_DOG("진돗개", "Jindo dog","ㅈ"),
+  CHOW_CHOW("차우차우", "Chow chow","ㅊ"),
+  CHINESE_SHARES_PEI("차이니즈 샤페이", "Chinese shares pei","ㅊ"),
+  CHINESE_CRESTED_DOG("차이니즈 크레스티드", "Chinese crested dog","ㅊ"),
+  CHESAPEAKE_BAY_RETRIEVER("체서피크 베이 레트리버", "Chesapeake bay retriever","ㅊ"),
+  CZECHOSLOVAKIAN_WOLFDOG("체코슬로바키아 늑대개", "Czechoslovakian wolfdog","ㅊ"),
+  CHIHUAHUA("치와와", "Chihuahua","ㅊ"),
+  CANE_CORSO("카네 코르소", "Cane corso","ㅋ"),
+  CARDIGAN_WELSH_CORGI("카디건 웰시 코기", "Cardigan welsh corgi","ㅋ"),
+  CAVALIER_KING_CHARLES_SPANIEL("카발리에 킹 찰스 스파니엘", "Cavalier king charles spaniel","ㅋ"),
+  KANGAL("캉갈", "Kangal","ㅋ"),
+  CURLY_COATED_RETRIEVER("컬리 코티드 레트리버", "Curly coated retriever","ㅋ"),
+  KERRY_BLUE_TERRIER("케리 블루 테리어", "Kerry blue terrier","ㅋ"),
+  CAIRN_TERRIER("케언 테리어", "Cairn terrier","ㅋ"),
+  CANAAN_DOG("케이넌 도그", "Canaan dog","ㅋ"),
+  KEESHOND("케이스혼트", "Keeshond","ㅋ"),
+  KOREAN_MASTIFF("코리안 마스티프", "Korean mastiff","ㅋ"),
+  KOMONDOR("코몬도르", "Komondor","ㅋ"),
+  COCKER_SPANIEL("코커 스패니얼", "Cocker spaniel","ㅋ"),
+  COLLIE("콜리", "Collie","ㅋ"),
+  KUVASZ("쿠바스", "Kuvasz","ㅋ"),
+  KOOIKERHONDJE("쿠이커혼제", "Kooikerhondje","ㅋ"),
+  CLUMBER_SPANIEL("클럼버 스패니얼", "Clumber spaniel","ㅋ"),
+  TOY_FOX_TERRIER("토이 폭스 테리어", "Toy fox terrier","ㅋ"),
+  TIBETAN_MASTIFF("티베탄 마스티프", "Tibetan mastiff","ㅋ"),
+  TIBETAN_SPANIEL("티베탄 스패니얼", "Tibetan spaniel","ㅋ"),
+  TIBETAN_TERRIER("티베탄 테리어", "Tibetan terrier","ㅋ"),
+  PHARAOH_HOUND("파라오 하운드", "Pharaoh hound","ㅍ"),
+  PARSON_RUSSELL_TERRIER("파슨 러셀 테리어", "Parson russell terrier","ㅍ"),
+  PATTERDALE_TERRIER("패터데일 테리어", "Patterdale terrier","ㅍ"),
+  PUG("퍼그", "Pug","ㅍ"),
+  PEKINGESE("페키니즈", "Pekingese","ㅍ"),
+  PEMBROKE_WELSH_CORGI("펨브록 웰시 코기", "Pembroke welsh corgi","ㅍ"),
+  PORTUGUESE_WATER_DOG("포르투기즈 워터 도그", "Portuguese water dog","ㅍ"),
+  POMERANIAN("포메라니안", "Pomeranian","ㅍ"),
+  POINTER("포인터", "Pointer","ㅍ"),
+  FOX_TERRIER("폭스 테리어", "Fox terrier","ㅍ"),
+  POLISH_LOWLAND_SHEEPDOG("폴리시 롤런드 시프도그", "Polish lowland sheepdog","ㅍ"),
+  POMPITZ("폼피츠", "pompitz","ㅍ"),
+  PUDDLE("푸들", "Puddle","ㅍ"),
+  PUMI("푸미", "Pumi","ㅍ"),
+  PULI_DOG("풀리", "Puli dog","ㅍ"),
+  POONGSAN_DOG("풍산개", "Poongsan dog","ㅍ"),
+  FRENCH_BULLDOG("프렌치 불도그", "French bulldog","ㅍ"),
+  PETIT_BASSET_GRIFFON_VENDEEN("프티 바세 그리퐁 방댕", "Petit basset griffon vendeen","ㅍ"),
+  FLAT_COATED_RETRIEVER("플랫 코티드 레트리버", "Flat coated retriever","ㅍ"),
+  PLOTT_HOUND("플롯 하운드", "Plott hound","ㅍ"),
+  FINNISH_SPITZ("피니시 스피츠", "Finnish spitz","ㅍ"),
+  PYRENEAN_MASTIFF("피레니안 마스티프", "Pyrenean mastiff","ㅍ"),
+  PYRENEAN_SHEEPDOG("피레니안 쉽독", "Pyrenean sheepdog","ㅍ"),
+  PYRENEAN_SHEPHERD("피레니언 셰퍼드", "Pyrenean shepherd","ㅍ"),
+  FIELD_SPANIEL("필드 스패니얼", "Field spaniel","ㅍ"),
+  FILA_BRASILEIRO("필라 브라질레이로", "Fila brasileiro","ㅍ"),
+  PIT_BULL_TERRIER("핏 불 테리어", "Pit bull tERRIER","ㅍ"),
+  HARRIER("해리어", "Harrier","ㅎ"),
+  HAVANESE("하바니즈", "Havanese","ㅎ"),
+  HOKKAIDO_INU("홋카이도 이누", "Hokkaido inu","ㅎ"),
+  WHIPPET("휘핏", "Whippet","ㅎ"),
 
   ;
 
 
   private final String korName;
   private final String engName;
-  private final String firstName;
+  private final String indexCode;
+
+  public static List<Species> getAll() {
+    return List.of(Species.values());
+  }
 
 }

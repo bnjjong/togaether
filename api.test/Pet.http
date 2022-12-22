@@ -13,12 +13,12 @@ Content-Type: application/json
 
 {
   "name": "뽀미",
-  "species": "NULL",
+  "species": "GORDON_SETTER",
   "pet_character": "TEST",
   "gender": "MALE",
   "birth": "2022-01-01"
 }
 
-### 회원 조회
-GET {{host}}:{{port}}/member/jongsang@naver.com
-Content-Type: application/json
+### 펫 이미지 조회
+GET {{host}}:{{port}}/pet/image
+Content-Type: image/jpeg, image/png

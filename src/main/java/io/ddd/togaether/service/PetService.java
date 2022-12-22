@@ -5,6 +5,7 @@ import io.ddd.togaether.dao.PetRepository;
 import io.ddd.togaether.dto.PetCreationRequest;
 import io.ddd.togaether.model.Member;
 import io.ddd.togaether.model.Pet;
+import io.ddd.togaether.util.FileHelper;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -55,6 +56,7 @@ public class PetService {
         uploadDir + File.separator
             + member.getId() + File.separator
             + StringUtils.cleanPath(image.getOriginalFilename()));
+
     // file upload
     try {
       String fileName = getFileNameServer(image);

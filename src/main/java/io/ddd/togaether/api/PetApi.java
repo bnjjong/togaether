@@ -8,9 +8,14 @@ import io.ddd.togaether.dto.PetDto;
 import io.ddd.togaether.dto.SignupRequest;
 import io.ddd.togaether.service.PetService;
 import jakarta.validation.Valid;
+import java.io.FileInputStream;
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -51,5 +56,15 @@ public class PetApi {
     petService.create(request, image);
 
     return new ResponseEntity<>(HttpStatus.CREATED);
+  }
+
+  @GetMapping(
+      value = "/image",
+      produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE}
+  )
+  public byte[] getImage() throws IOException {
+    try (InputStream in = new FileInputStream("/Users/henry/images/1/retriever.png")) {
+      return IOUtils.toByteArray(in);
+    }
   }
 }

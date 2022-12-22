@@ -12,3 +12,6 @@ Content-Type: application/json
 ### 회원 조회
 GET {{host}}:{{port}}/member/jongsang@naver.com
 Content-Type: application/json
+
+### 내 프사 Upload
+POST {{host}}:{{port}}
