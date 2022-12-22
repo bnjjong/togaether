@@ -4,5 +4,5 @@ Content-Type: application/json
 
 
 ### 종(개) 키워드 조회
-GET {{host}}:{{port}}/common/species/그레이트
+GET {{host}}:{{port}}/common/species/ㅁ
 Content-Type: application/json

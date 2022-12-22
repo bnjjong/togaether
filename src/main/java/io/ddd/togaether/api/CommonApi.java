@@ -43,7 +43,7 @@ public class CommonApi {
       @PathVariable(value = "keyword") final String keyword
   ) {
     List<SpeciesDto> speciesDtos = Species.getAll().stream()
-        .filter(s -> s.getKorName().contains(keyword))
+        .filter(s -> s.getKorName().contains(keyword) || s.getIndexCode().equals(keyword))
         .map(s -> new SpeciesDto(s.getKorName(), s.getIndexCode()))
         .collect(Collectors.toList());
 
