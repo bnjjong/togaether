@@ -7,6 +7,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * create on 2022/12/22. create by IntelliJ IDEA.
@@ -90,6 +93,29 @@ public class FileHelper {
         outputStream.write(bytes, 0, read);
       }
     }
+  }
+
+  public static String getFileNameServer(MultipartFile multipartFile) {
+    // 파일 확장자 추출
+    int pos = multipartFile.getOriginalFilename().lastIndexOf(".");
+    String ext = multipartFile.getOriginalFilename().substring(pos + 1);
+
+    // 서버에 올라갈 파일명 반환
+    return FileHelper.makeFileName() + "." + ext;
+  }
+
+  private static String makeFileName() {
+    Date now = new Date();
+    String today = new SimpleDateFormat("yyyyMMddHHmmss").format(now);
+
+    String random = "";
+    for (int i = 1; i <= 10; i++) {
+      char ch = (char) ((Math.random() * 26) + 97);
+      random += ch;
+    }
+    String result = today + random;
+
+    return result;
   }
 
 }

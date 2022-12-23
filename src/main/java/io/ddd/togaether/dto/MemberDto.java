@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -29,6 +30,9 @@ public class MemberDto {
   private String email;
   private String name;
   private LocalDate birth;
+
+  @Setter
+  private String myProfilePictureUrl;
 
   public MemberDto(Long id, String email, String name, LocalDate birth) {
     this.id = id;

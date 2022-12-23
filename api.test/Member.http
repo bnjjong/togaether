@@ -14,4 +14,15 @@ GET {{host}}:{{port}}/member/jongsang@naver.com
 Content-Type: application/json
 
 ### 내 프사 Upload
-POST {{host}}:{{port}}
+POST {{host}}:{{port}}/member/upload-picture
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="profile"; filename="profile.png"
+Content-Type: application/json
+
+< profile.png
+
+### 내 프로필 사진 조회
+GET {{host}}:{{port}}/member/my-profile-picture
+Content-Type: image/jpeg, image/png

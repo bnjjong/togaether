@@ -44,7 +44,7 @@ public class PetService {
 
   private final SecurityContextUtils securityContextUtils;
 
-  @Value("${app.upload.dir:${user.home}}")
+  @Value("${app.upload.dir}")
   private String uploadDir;
 
   @Transactional
@@ -55,11 +55,10 @@ public class PetService {
     Path uploadPath = Paths.get(
         uploadDir + File.separator
             + member.getId() + File.separator
-            + StringUtils.cleanPath(image.getOriginalFilename()));
+            + StringUtils.cleanPath(FileHelper.getFileNameServer(image)));
 
     // file upload
     try {
-      String fileName = getFileNameServer(image);
       File file = new File(uploadPath.toString());
 
       // *** 파일 업로드
@@ -82,28 +81,8 @@ public class PetService {
     repository.save(pet);
   }
 
-  private static String getFileNameServer(MultipartFile multipartFile) {
-    // 파일 확장자 추출
-    int pos = multipartFile.getOriginalFilename().lastIndexOf(".");
-    String ext = multipartFile.getOriginalFilename().substring(pos + 1);
 
-    // 서버에 올라갈 파일명 반환
-    return makeFileName() + "." + ext;
-  }
 
-  // 파일명 랜덤 생성
-  public static String makeFileName() {
-    Date now = new Date();
-    String today = new SimpleDateFormat("yyyyMMddHHmmss").format(now);
 
-    String random = "";
-    for (int i = 1; i <= 10; i++) {
-      char ch = (char) ((Math.random() * 26) + 97);
-      random += ch;
-    }
-    String result = today + random;
-
-    return result;
-  }
 
 }

@@ -51,6 +51,9 @@ public class Member {
   @Column
   private LocalDate birth;
 
+  @Column
+  private String profilePicturePath;
+
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
   @ToString.Exclude
   private List<Pet> pets;
@@ -74,5 +77,9 @@ public class Member {
 
   public void addAuthority(AuthGrade authGrade) {
     this.authorities = List.of(new MemberAuthority(this, authGrade.toString()));
+  }
+
+  public void updateProfilePicture(String profilePicturePath) {
+    this.profilePicturePath = profilePicturePath;
   }
 }

@@ -1,17 +1,30 @@
 package io.ddd.togaether.service;
 
+import io.ddd.togaether.config.security.SecurityContextUtils;
 import io.ddd.togaether.dao.MemberRepository;
 import io.ddd.togaether.dto.MemberDto;
 import io.ddd.togaether.dto.SignupRequest;
 import io.ddd.togaether.dto.mapper.MemberMapper;
 import io.ddd.togaether.model.AuthGrade;
 import io.ddd.togaether.model.Member;
+import io.ddd.togaether.util.FileHelper;
 import jakarta.persistence.EntityNotFoundException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * create on 2022/12/11. create by IntelliJ IDEA.
@@ -30,9 +43,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class MemberService {
   private final MemberRepository repository;
-  private final MemberMapper mapper;
 
+  private final MemberMapper mapper;
   private final PasswordEncoder passwordEncoder;
+  private final SecurityContextUtils securityContextUtils;
+
+
+  @Value("${app.upload.dir}")
+  private String uploadDir;
 
 
   @Transactional
@@ -54,5 +72,30 @@ public class MemberService {
     Member member = repository.findByEmail(email)
         .orElseThrow(() -> new EntityNotFoundException("member is not exists by email : " + email));
     return mapper.toDto(member);
+  }
+
+  @Transactional
+  public void uploadProfilePicture(MultipartFile profile) throws FileUploadException {
+    Member member = securityContextUtils.getLoginMember();
+    Path uploadPath = Paths.get(
+        uploadDir + File.separator
+            + member.getId() + File.separator
+            + StringUtils.cleanPath(FileHelper.getFileNameServer(profile)));
+    // file upload
+    try {
+      File file = new File(uploadPath.toString());
+
+      // *** 파일 업로드
+      FileUtils.writeByteArrayToFile(file, profile.getBytes());
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new FileUploadException("Could not store file : " + profile.getOriginalFilename());
+    }
+    member.updateProfilePicture(uploadPath.toString());
+  }
+
+  public InputStream retrieveMyProfilePictureInputStream() throws FileNotFoundException {
+    Member member = securityContextUtils.getLoginMember();
+    return new FileInputStream(member.getProfilePicturePath());
   }
 }
