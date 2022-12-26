@@ -23,10 +23,12 @@ import lombok.ToString;
 @JsonNaming(SnakeCaseStrategy.class)
 public class SpeciesDto {
 
+  private String codeName;
   private String korName;
   private String indexCode;
 
-  public SpeciesDto(String korName, String indexCode) {
+  public SpeciesDto(String codeName, String korName, String indexCode) {
+    this.codeName = codeName;
     this.korName = korName;
     this.indexCode = indexCode;
   }
