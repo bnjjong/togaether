@@ -1,6 +1,8 @@
 package io.ddd.togaether.api;
 
+import io.ddd.togaether.dto.CharacterDto;
 import io.ddd.togaether.dto.SpeciesDto;
+import io.ddd.togaether.model.Character;
 import io.ddd.togaether.model.Species;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,7 +34,7 @@ public class CommonApi {
   @GetMapping("/species-all")
   public ResponseEntity<List<SpeciesDto>> retrieveAllSpecies() {
     List<SpeciesDto> speciesDtos = Species.getAll().stream()
-        .map(s -> new SpeciesDto(s.getKorName(), s.getIndexCode()))
+        .map(s -> new SpeciesDto(s.toString(), s.getKorName(), s.getIndexCode()))
         .collect(Collectors.toList());
 
     return new ResponseEntity<>(speciesDtos, HttpStatus.OK);
@@ -44,10 +46,19 @@ public class CommonApi {
   ) {
     List<SpeciesDto> speciesDtos = Species.getAll().stream()
         .filter(s -> s.getKorName().contains(keyword) || s.getIndexCode().equals(keyword))
-        .map(s -> new SpeciesDto(s.getKorName(), s.getIndexCode()))
+        .map(s -> new SpeciesDto(s.toString(), s.getKorName(), s.getIndexCode()))
         .collect(Collectors.toList());
 
     return new ResponseEntity<>(speciesDtos, HttpStatus.OK);
+  }
+
+  @GetMapping("/characters-all")
+  public ResponseEntity<List<CharacterDto>> retrieveAllCharacters() {
+    List<CharacterDto> characters = Character.getAll().stream()
+        .map(c -> new CharacterDto(c.toString(), c.getKorText()))
+        .collect(Collectors.toList());
+
+    return new ResponseEntity<>(characters, HttpStatus.OK);
   }
 
 }
