@@ -14,9 +14,11 @@ Content-Type: application/json
 {
   "name": "뽀미",
   "species": "GORDON_SETTER",
-  "pet_character": "TEST",
+  "pet_character": "FRIENDLY",
   "gender": "MALE",
-  "birth": "2022-01-01"
+  "birth": "2022-01-01",
+  "description": "밝은 강아지",
+  "etc": "한쪽눈이 불편해요."
 }
 
 ### 펫 이미지 조회
