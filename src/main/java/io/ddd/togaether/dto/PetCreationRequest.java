@@ -32,4 +32,6 @@ public class PetCreationRequest {
   private Character petCharacter;
   private Gender gender;
   private LocalDate birth;
+  private String description;
+  private String etc;
 }

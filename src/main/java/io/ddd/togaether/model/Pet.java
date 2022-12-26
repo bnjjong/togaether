@@ -72,13 +72,25 @@ public class Pet {
   @ToString.Exclude
   private List<PetImage> petImages;
 
+  /**
+   * 강아지 설명(특징)
+   */
+  @Column
+  private String description;
+
+  /**
+   * 강아지 설명 기타
+   */
+  @Column
+  private String etc;
+
   @Column
   private int likeCount = 0;
 
 
   @Builder
   public Pet(@NonNull Member owner, @NonNull String name, @NonNull Species species, @NonNull Character petCharacter, @NonNull Gender gender,
-      LocalDate birth, String mainImagePath) {
+      LocalDate birth, String mainImagePath, String description, String etc) {
     this.owner = owner;
     this.name = name;
     this.species = species;
@@ -86,5 +98,7 @@ public class Pet {
     this.gender = gender;
     this.birth = birth;
     this.mainImage = mainImagePath;
+    this.description = description;
+    this.etc = etc;
   }
 }

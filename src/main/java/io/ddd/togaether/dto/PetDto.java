@@ -39,10 +39,13 @@ public class PetDto {
   private LocalDate birth;
   private PetImage mainImage;
   private List<PetImage> petImages;
+  private String description;
+  private String etc;
   private int likeCount;
 
   public PetDto(Long id, Member owner, String name, Species species, Character character,
-      Gender gender, LocalDate birth, PetImage mainImage, List<PetImage> petImages, int likeCount) {
+      Gender gender, LocalDate birth, PetImage mainImage, List<PetImage> petImages,
+      String description, String etc, int likeCount) {
     this.id = id;
     this.owner = owner;
     this.name = name;
@@ -52,6 +55,8 @@ public class PetDto {
     this.birth = birth;
     this.mainImage = mainImage;
     this.petImages = petImages;
+    this.description = description;
+    this.etc = etc;
     this.likeCount = likeCount;
   }
 }

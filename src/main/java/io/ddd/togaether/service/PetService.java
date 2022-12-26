@@ -76,6 +76,8 @@ public class PetService {
         .gender(request.getGender())
         .birth(request.getBirth())
         .mainImagePath(uploadPath.toString())
+        .description(request.getDescription())
+        .etc(request.getEtc())
         .build();
 
     repository.save(pet);

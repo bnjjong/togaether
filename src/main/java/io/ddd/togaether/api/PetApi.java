@@ -1,18 +1,11 @@
 package io.ddd.togaether.api;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
-import io.ddd.togaether.dto.MemberDto;
 import io.ddd.togaether.dto.PetCreationRequest;
-import io.ddd.togaether.dto.PetDto;
-import io.ddd.togaether.dto.SignupRequest;
 import io.ddd.togaether.service.PetService;
 import jakarta.validation.Valid;
 import java.io.FileInputStream;
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -22,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
