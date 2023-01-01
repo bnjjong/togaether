@@ -37,6 +37,7 @@ public class MemberAuthority implements GrantedAuthority {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "member_id", nullable = false)
+  @ToString.Exclude
   private Member member;
 
   /**

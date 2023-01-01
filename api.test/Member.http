@@ -13,6 +13,21 @@ Content-Type: application/json
 GET {{host}}:{{port}}/member/jongsang@naver.com
 Content-Type: application/json
 
+### 로그인
+POST {{host}}:{{port}}/sign-in/member
+Content-Type: application/json
+
+{
+  "email": "jongsang@naver.com",
+  "password": "abcd!23$"
+}
+
+> {% //response handler
+  client.global.set("token", response.body.data.jwt); // (1)
+  client.log("token : " + client.global.get("token")); // (2)
+%}
+
+
 ### 내 프사 Upload
 POST {{host}}:{{port}}/member/upload-picture
 Content-Type: multipart/form-data; boundary=boundary
