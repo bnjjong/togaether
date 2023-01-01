@@ -1,11 +1,13 @@
 package io.ddd.togaether.api;
 
 import io.ddd.togaether.dto.PetCreationRequest;
+import io.ddd.togaether.dto.PetDto;
 import io.ddd.togaether.service.PetService;
 import jakarta.validation.Valid;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -14,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -50,12 +53,31 @@ public class PetApi {
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
+  @GetMapping(value = "/all")
+  public ResponseEntity<List<PetDto>> myPetIds() {
+    List<PetDto> pets = petService.findAll();
+    return new ResponseEntity<>(pets, HttpStatus.OK);
+  }
+
   @GetMapping(
       value = "/image",
       produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE}
   )
   public byte[] getImage() throws IOException {
     try (InputStream in = new FileInputStream("/Users/henry/images/1/retriever.png")) {
+      return IOUtils.toByteArray(in);
+    }
+  }
+
+
+  @GetMapping(
+      value = "/main-image/{petId}",
+      produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE}
+  )
+  public byte[] getmainImage(
+      @PathVariable(value = "petId") final Long petId
+  ) throws IOException {
+    try (InputStream in = petService.retrievePetMainImage(petId)) {
       return IOUtils.toByteArray(in);
     }
   }

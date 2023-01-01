@@ -90,14 +90,14 @@ public class Pet {
 
   @Builder
   public Pet(@NonNull Member owner, @NonNull String name, @NonNull Species species, @NonNull Character petCharacter, @NonNull Gender gender,
-      LocalDate birth, String mainImagePath, String description, String etc) {
+      LocalDate birth, String mainImage, String description, String etc) {
     this.owner = owner;
     this.name = name;
     this.species = species;
     this.petCharacter = petCharacter;
     this.gender = gender;
     this.birth = birth;
-    this.mainImage = mainImagePath;
+    this.mainImage = mainImage;
     this.description = description;
     this.etc = etc;
   }

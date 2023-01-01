@@ -3,17 +3,20 @@ package io.ddd.togaether.service;
 import io.ddd.togaether.config.security.SecurityContextUtils;
 import io.ddd.togaether.dao.PetRepository;
 import io.ddd.togaether.dto.PetCreationRequest;
+import io.ddd.togaether.dto.PetDto;
+import io.ddd.togaether.dto.mapper.PetMapper;
 import io.ddd.togaether.model.Member;
 import io.ddd.togaether.model.Pet;
 import io.ddd.togaether.util.FileHelper;
+import jakarta.persistence.EntityNotFoundException;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -43,6 +46,8 @@ public class PetService {
   private final PetRepository repository;
 
   private final SecurityContextUtils securityContextUtils;
+
+  private final PetMapper petMapper;
 
   @Value("${app.upload.dir}")
   private String uploadDir;
@@ -75,7 +80,7 @@ public class PetService {
         .petCharacter(request.getPetCharacter())
         .gender(request.getGender())
         .birth(request.getBirth())
-        .mainImagePath(uploadPath.toString())
+        .mainImage(uploadPath.toString())
         .description(request.getDescription())
         .etc(request.getEtc())
         .build();
@@ -84,7 +89,27 @@ public class PetService {
   }
 
 
+  public List<PetDto> findAll() {
+    Member member = securityContextUtils.getLoginMember();
+    List<Pet> pets = member.getPets();
 
+    return pets.stream()
+        .map(p -> {
+          PetDto petDto = petMapper.toDto(p);
+          petDto.setMainImage("/pet/main-image/" + petDto.getId());
+          return petDto;
+        })
+        .collect(Collectors.toList());
+  }
 
+  public InputStream retrievePetMainImage(Long petId) throws FileNotFoundException {
+    Member member = securityContextUtils.getLoginMember();
+    boolean matched = member.getPets().stream()
+        .anyMatch(p -> p.getId().equals(petId));
 
+    Pet pet = repository.findById(petId)
+        .orElseThrow(() -> new EntityNotFoundException("pet is not exits by id : " + petId));
+
+    return new FileInputStream(pet.getMainImage());
+  }
 }

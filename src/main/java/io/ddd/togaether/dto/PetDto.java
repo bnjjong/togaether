@@ -12,6 +12,7 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -31,26 +32,25 @@ import lombok.ToString;
 @JsonNaming(SnakeCaseStrategy.class)
 public class PetDto {
   private Long id;
-  private Member owner;
   private String name;
   private Species species;
-  private Character character;
+  private Character petCharacter;
   private Gender gender;
   private LocalDate birth;
-  private PetImage mainImage;
+  @Setter
+  private String mainImage;
   private List<PetImage> petImages;
   private String description;
   private String etc;
   private int likeCount;
 
-  public PetDto(Long id, Member owner, String name, Species species, Character character,
-      Gender gender, LocalDate birth, PetImage mainImage, List<PetImage> petImages,
+  public PetDto(Long id, Member owner, String name, Species species, Character petCharacter,
+      Gender gender, LocalDate birth, String mainImage, List<PetImage> petImages,
       String description, String etc, int likeCount) {
     this.id = id;
-    this.owner = owner;
     this.name = name;
     this.species = species;
-    this.character = character;
+    this.petCharacter = petCharacter;
     this.gender = gender;
     this.birth = birth;
     this.mainImage = mainImage;
