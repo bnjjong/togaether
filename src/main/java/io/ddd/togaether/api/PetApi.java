@@ -2,12 +2,13 @@ package io.ddd.togaether.api;
 
 import io.ddd.togaether.dto.PetCreationRequest;
 import io.ddd.togaether.dto.PetDto;
+import io.ddd.togaether.dto.paging.CommonPagingResponse;
+import io.ddd.togaether.dto.paging.PagingCommonImplRequest;
 import io.ddd.togaether.service.PetService;
 import jakarta.validation.Valid;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,9 +55,11 @@ public class PetApi {
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
-  @GetMapping(value = "/all")
-  public ResponseEntity<List<PetDto>> myPetIds() {
-    List<PetDto> pets = petService.findAll();
+  @GetMapping(value = "/list")
+  public ResponseEntity<CommonPagingResponse<PetDto>> findList(
+      @Valid @RequestBody PagingCommonImplRequest request
+  ) {
+    CommonPagingResponse<PetDto> pets = petService.findPagingList(request);
     return new ResponseEntity<>(pets, HttpStatus.OK);
   }
 

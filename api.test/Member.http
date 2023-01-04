@@ -41,3 +41,8 @@ Content-Type: application/json
 ### 내 프로필 사진 조회
 GET {{host}}:{{port}}/member/my-profile-picture
 Content-Type: image/jpeg, image/png
+
+
+### 나의 펫 조회
+GET {{host}}:{{port}}/member/my-pets
+Content-Type: application/json

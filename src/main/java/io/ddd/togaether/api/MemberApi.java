@@ -3,12 +3,13 @@ package io.ddd.togaether.api;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import io.ddd.togaether.dto.MemberDto;
+import io.ddd.togaether.dto.PetDto;
 import io.ddd.togaether.dto.SignupRequest;
 import io.ddd.togaether.service.MemberService;
 import jakarta.validation.Valid;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -80,6 +81,12 @@ public class MemberApi {
     try (InputStream in = memberService.retrieveMyProfilePictureInputStream()) {
       return IOUtils.toByteArray(in);
     }
+  }
+
+  @GetMapping(value = "/my-pets")
+  public ResponseEntity<List<PetDto>> findAll() {
+    List<PetDto> pets = memberService.findMyPets();
+    return new ResponseEntity<>(pets, HttpStatus.OK);
   }
 
 }

@@ -5,9 +5,12 @@ import io.ddd.togaether.dao.PetRepository;
 import io.ddd.togaether.dto.PetCreationRequest;
 import io.ddd.togaether.dto.PetDto;
 import io.ddd.togaether.dto.mapper.PetMapper;
+import io.ddd.togaether.dto.paging.CommonPagingResponse;
+import io.ddd.togaether.dto.paging.PagingCommonImplRequest;
 import io.ddd.togaether.model.Member;
 import io.ddd.togaether.model.Pet;
 import io.ddd.togaether.util.FileHelper;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -48,6 +52,7 @@ public class PetService {
   private final SecurityContextUtils securityContextUtils;
 
   private final PetMapper petMapper;
+
 
   @Value("${app.upload.dir}")
   private String uploadDir;
@@ -88,20 +93,6 @@ public class PetService {
     repository.save(pet);
   }
 
-
-  public List<PetDto> findAll() {
-    Member member = securityContextUtils.getLoginMember();
-    List<Pet> pets = member.getPets();
-
-    return pets.stream()
-        .map(p -> {
-          PetDto petDto = petMapper.toDto(p);
-          petDto.setMainImage("/pet/main-image/" + petDto.getId());
-          return petDto;
-        })
-        .collect(Collectors.toList());
-  }
-
   public InputStream retrievePetMainImage(Long petId) throws FileNotFoundException {
     Member member = securityContextUtils.getLoginMember();
     boolean matched = member.getPets().stream()
@@ -111,5 +102,26 @@ public class PetService {
         .orElseThrow(() -> new EntityNotFoundException("pet is not exits by id : " + petId));
 
     return new FileInputStream(pet.getMainImage());
+  }
+
+  public CommonPagingResponse<PetDto> findPagingList(PagingCommonImplRequest request) {
+    Page<Pet> pets = repository.findAll(request.getPageable());
+    return new CommonPagingResponse<>(
+        pets.getTotalElements(),
+        pets.getTotalPages(),
+        pets.getNumber(),
+        toDto(pets.getContent())
+    );
+  }
+
+
+  public List<PetDto> toDto(List<Pet> pets) {
+    return pets.stream()
+        .map(p -> {
+          PetDto petDto = petMapper.toDto(p);
+          petDto.setMainImage("/pet/main-image/" + petDto.getId());
+          return petDto;
+        })
+        .collect(Collectors.toList());
   }
 }

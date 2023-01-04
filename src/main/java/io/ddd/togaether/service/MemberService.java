@@ -3,11 +3,15 @@ package io.ddd.togaether.service;
 import io.ddd.togaether.config.security.SecurityContextUtils;
 import io.ddd.togaether.dao.MemberRepository;
 import io.ddd.togaether.dto.MemberDto;
+import io.ddd.togaether.dto.PetDto;
 import io.ddd.togaether.dto.SignupRequest;
 import io.ddd.togaether.dto.mapper.MemberMapper;
+import io.ddd.togaether.dto.mapper.PetMapper;
 import io.ddd.togaether.model.AuthGrade;
 import io.ddd.togaether.model.Member;
+import io.ddd.togaether.model.Pet;
 import io.ddd.togaether.util.FileHelper;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,10 +19,13 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,15 +46,15 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Service
 @Transactional(readOnly = true)
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class MemberService {
   private final MemberRepository repository;
+  private final PetService petService;
 
   private final MemberMapper mapper;
   private final PasswordEncoder passwordEncoder;
   private final SecurityContextUtils securityContextUtils;
-
 
   @Value("${app.upload.dir}")
   private String uploadDir;
@@ -98,4 +105,12 @@ public class MemberService {
     Member member = securityContextUtils.getLoginMember();
     return new FileInputStream(member.getProfilePicturePath());
   }
+
+  public List<PetDto> findMyPets() {
+    Member member = securityContextUtils.getLoginMember();
+    List<Pet> pets = member.getPets();
+    return petService.toDto(pets);
+  }
+
+
 }
