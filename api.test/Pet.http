@@ -1,6 +1,8 @@
 ### 펫 등록
 POST {{host}}:{{port}}/pet
 Content-Type: multipart/form-data; boundary=boundary;
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb25nc2FuZ0BuYXZlci5jb20iLCJpc3MiOiJUT0dBRVRIRVIiLCJhdWQiOiJVU0VSIiwicm9sZXMiOlsiTk9STUFMIl0sImlhdCI6MTY3Mjg5NDYzNywiZXhwIjoxNzA0NDMwNjM3fQ.fVm0CKCAcpyWxdxxy-M_l_hsPijRZEmfYSZ9JDam82o
+
 
 --boundary
 Content-Disposition: form-data; name="main_image"; filename="retriever.png";
@@ -25,17 +27,22 @@ Content-Type: application/json
 ### 펫 메인 이미지 조회
 GET {{host}}:{{port}}/pet/main-image/1
 Content-Type: image/jpeg, image/png
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb25nc2FuZ0BuYXZlci5jb20iLCJpc3MiOiJUT0dBRVRIRVIiLCJhdWQiOiJVU0VSIiwicm9sZXMiOlsiTk9STUFMIl0sImlhdCI6MTY3Mjg5NDYzNywiZXhwIjoxNzA0NDMwNjM3fQ.fVm0CKCAcpyWxdxxy-M_l_hsPijRZEmfYSZ9JDam82o
 
-### 펫 이미지 조회
-GET {{host}}:{{port}}/pet/image
-Content-Type: image/jpeg, image/png
-
-### 펫 조회
+### 펫 조회 (페이징)
 GET {{host}}:{{port}}/pet/list
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb25nc2FuZ0BuYXZlci5jb20iLCJpc3MiOiJUT0dBRVRIRVIiLCJhdWQiOiJVU0VSIiwicm9sZXMiOlsiTk9STUFMIl0sImlhdCI6MTY3Mjg5NDYzNywiZXhwIjoxNzA0NDMwNjM3fQ.fVm0CKCAcpyWxdxxy-M_l_hsPijRZEmfYSZ9JDam82o
 
 {
+
   "page_size" : 10,
   "current_page" : 1
 }
+
+### 펫 좋아요.
+PUT {{host}}:{{port}}/pet/1/like
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb25nc2FuZ0BuYXZlci5jb20iLCJpc3MiOiJUT0dBRVRIRVIiLCJhdWQiOiJVU0VSIiwicm9sZXMiOlsiTk9STUFMIl0sImlhdCI6MTY3Mjg5NDYzNywiZXhwIjoxNzA0NDMwNjM3fQ.fVm0CKCAcpyWxdxxy-M_l_hsPijRZEmfYSZ9JDam82o
+
 

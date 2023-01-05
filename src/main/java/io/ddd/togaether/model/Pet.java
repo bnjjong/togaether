@@ -1,8 +1,10 @@
 package io.ddd.togaether.model;
 
+import io.ddd.togaether.config.jpa.AuditEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
@@ -20,6 +22,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * create on 2022/12/11. create by IntelliJ IDEA.
@@ -36,7 +39,8 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Pet {
+@EntityListeners({AuditingEntityListener.class})
+public class Pet extends AuditEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -100,5 +104,9 @@ public class Pet {
     this.mainImage = mainImage;
     this.description = description;
     this.etc = etc;
+  }
+
+  public void addLike() {
+    this.likeCount++;
   }
 }

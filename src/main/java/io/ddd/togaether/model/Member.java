@@ -1,8 +1,10 @@
 package io.ddd.togaether.model;
 
+import io.ddd.togaether.config.jpa.AuditEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,6 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * create on 2022/12/11. create by IntelliJ IDEA.
@@ -32,7 +35,8 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+@EntityListeners({AuditingEntityListener.class})
+public class Member extends AuditEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

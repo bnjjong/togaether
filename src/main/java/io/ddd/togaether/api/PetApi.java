@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -63,14 +64,12 @@ public class PetApi {
     return new ResponseEntity<>(pets, HttpStatus.OK);
   }
 
-  @GetMapping(
-      value = "/image",
-      produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE}
-  )
-  public byte[] getImage() throws IOException {
-    try (InputStream in = new FileInputStream("/Users/henry/images/1/retriever.png")) {
-      return IOUtils.toByteArray(in);
-    }
+  @PutMapping(value = "/{petId}/like")
+  public ResponseEntity<Void> like(
+      @PathVariable(value = "petId") final Long petId
+  ) {
+    petService.like(petId);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
 
@@ -85,4 +84,6 @@ public class PetApi {
       return IOUtils.toByteArray(in);
     }
   }
+
+
 }
