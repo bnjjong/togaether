@@ -1,9 +1,6 @@
 package io.ddd.togaether.dao;
 
-import io.ddd.togaether.model.LikeLog;
-import io.ddd.togaether.model.Pet;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import io.ddd.togaether.model.FollowLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -16,7 +13,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @see
  * @since 1.0
  */
-public interface LikeLogRepository extends JpaRepository<LikeLog, Long> {
+public interface FollowLogRepository extends JpaRepository<FollowLog, Long> {
 
 
 }

@@ -9,9 +9,14 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -58,13 +63,21 @@ public class Member extends AuditEntity {
   @Column
   private String profilePicturePath;
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "owner")
   @ToString.Exclude
   private List<Pet> pets;
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "member")
   @ToString.Exclude
   private List<MemberAuthority> authorities;
+
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name = "follower_following",
+      joinColumns = @JoinColumn(name = "member_id"),
+      inverseJoinColumns = @JoinColumn(name = "pet_id")
+  )
+  @ToString.Exclude
+  private Set<Pet> following = new HashSet<>();
 
 
   @Builder

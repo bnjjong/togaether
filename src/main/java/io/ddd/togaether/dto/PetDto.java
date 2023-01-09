@@ -42,11 +42,11 @@ public class PetDto {
   private List<PetImage> petImages;
   private String description;
   private String etc;
-  private int likeCount;
+  private int followerCount;
 
   public PetDto(Long id, Member owner, String name, Species species, Character petCharacter,
       Gender gender, LocalDate birth, String mainImage, List<PetImage> petImages,
-      String description, String etc, int likeCount) {
+      String description, String etc, int followerCount) {
     this.id = id;
     this.name = name;
     this.species = species;
@@ -57,6 +57,6 @@ public class PetDto {
     this.petImages = petImages;
     this.description = description;
     this.etc = etc;
-    this.likeCount = likeCount;
+    this.followerCount = followerCount;
   }
 }

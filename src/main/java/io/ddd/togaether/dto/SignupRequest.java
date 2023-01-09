@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -55,4 +56,11 @@ public class SignupRequest {
   @NotNull(message = "A \"birth\" field is missing.")
   private LocalDate birth;
 
+  @Builder
+  public SignupRequest(String email, String password, String name, LocalDate birth) {
+    this.email = email;
+    this.password = password;
+    this.name = name;
+    this.birth = birth;
+  }
 }

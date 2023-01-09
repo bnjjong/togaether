@@ -1,14 +1,13 @@
 package io.ddd.togaether.service;
 
-import io.ddd.togaether.config.security.SecurityContextUtils;
-import io.ddd.togaether.dao.LikeLogRepository;
+import io.ddd.togaether.dao.FollowLogRepository;
 import io.ddd.togaether.dao.PetRepository;
 import io.ddd.togaether.dto.PetCreationRequest;
 import io.ddd.togaether.dto.PetDto;
 import io.ddd.togaether.dto.mapper.PetMapper;
 import io.ddd.togaether.dto.paging.CommonPagingResponse;
-import io.ddd.togaether.dto.paging.PagingCommonImplRequest;
-import io.ddd.togaether.model.LikeLog;
+import io.ddd.togaether.dto.paging.PagingPetRequest;
+import io.ddd.togaether.model.FollowLog;
 import io.ddd.togaether.model.Member;
 import io.ddd.togaether.model.Pet;
 import io.ddd.togaether.util.FileHelper;
@@ -49,9 +48,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class PetService {
 
   private final PetRepository petRepository;
-  private final LikeLogRepository likeLogRepository;
-
-  private final SecurityContextUtils securityContextUtils;
+  private final FollowLogRepository followLogRepository;
 
   private final PetMapper petMapper;
 
@@ -60,13 +57,12 @@ public class PetService {
   private String uploadDir;
 
   @Transactional
-  public void create(PetCreationRequest request, MultipartFile image)
+  public void create(PetCreationRequest request, MultipartFile image, Member owner)
       throws FileUploadException {
-    Member member = securityContextUtils.getLoginMember();
 
     Path uploadPath = Paths.get(
         uploadDir + File.separator
-            + member.getId() + File.separator
+            + owner.getId() + File.separator
             + StringUtils.cleanPath(FileHelper.getFileNameServer(image)));
 
     // file upload
@@ -81,7 +77,7 @@ public class PetService {
     }
 
     Pet pet = Pet.builder()
-        .owner(member)
+        .owner(owner)
         .name(request.getName())
         .species(request.getSpecies())
         .petCharacter(request.getPetCharacter())
@@ -96,9 +92,9 @@ public class PetService {
   }
 
   public InputStream retrievePetMainImage(Long petId) throws FileNotFoundException {
-    Member member = securityContextUtils.getLoginMember();
-    boolean matched = member.getPets().stream()
-        .anyMatch(p -> p.getId().equals(petId));
+//    Member member = securityContextUtils.getLoginMember();
+//    boolean matched = member.getPets().stream()
+//        .anyMatch(p -> p.getId().equals(petId));
 
     Pet pet = petRepository.findById(petId)
         .orElseThrow(() -> new EntityNotFoundException("pet is not exits by id : " + petId));
@@ -106,7 +102,7 @@ public class PetService {
     return new FileInputStream(pet.getMainImage());
   }
 
-  public CommonPagingResponse<PetDto> findPagingList(PagingCommonImplRequest request) {
+  public CommonPagingResponse<PetDto> findPagingList(PagingPetRequest request) {
     Page<Pet> pets = petRepository.findAll(request.getPageable());
     return new CommonPagingResponse<>(
         pets.getTotalElements(),
@@ -117,18 +113,18 @@ public class PetService {
   }
 
 
+
   @Transactional
-  public void like(Long petId) {
-    Member member = securityContextUtils.getLoginMember();
+  public void addFollower(Long petId, Member memberBy) {
     Pet pet = petRepository.findById(petId)
         .orElseThrow(() -> new EntityNotFoundException("pet id is not found : " + petId));
-    pet.addLike();
+    pet.addFollower(memberBy);
 
     // logging
-    likeLogRepository.save(
-        LikeLog.builder()
-            .member(member)
-            .pet(pet)
+    followLogRepository.save(
+        FollowLog.builder()
+            .memberId(memberBy.getId())
+            .petId(pet.getId())
             .build()
     );
   }

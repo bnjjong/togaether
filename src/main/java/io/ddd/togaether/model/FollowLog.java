@@ -24,7 +24,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 /**
  * create on 2023/01/05. create by IntelliJ IDEA.
@@ -41,20 +40,14 @@ import org.springframework.data.annotation.CreatedDate;
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class LikeLog {
+public class FollowLog {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "member_id")
-  @ToString.Exclude
-  private Member member;
+  private Long memberId;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "pet_id")
-  @ToString.Exclude
-  private Pet pet;
+  private Long petId;
 
   /**
    * 생성 일.
@@ -64,8 +57,8 @@ public class LikeLog {
   private LocalDateTime createdAt;
 
   @Builder
-  public LikeLog(@NonNull Member member, @NonNull Pet pet) {
-    this.member = member;
-    this.pet = pet;
+  public FollowLog(@NonNull Long memberId, @NonNull Long petId) {
+    this.memberId = memberId;
+    this.petId = petId;
   }
 }

@@ -1,12 +1,13 @@
 package io.ddd.togaether.api;
 
+import io.ddd.togaether.config.security.SecurityContextUtils;
 import io.ddd.togaether.dto.PetCreationRequest;
 import io.ddd.togaether.dto.PetDto;
 import io.ddd.togaether.dto.paging.CommonPagingResponse;
-import io.ddd.togaether.dto.paging.PagingCommonImplRequest;
+import io.ddd.togaether.dto.paging.PagingPetRequest;
+import io.ddd.togaether.model.Member;
 import io.ddd.togaether.service.PetService;
 import jakarta.validation.Valid;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class PetApi {
 
+  private final SecurityContextUtils securityContextUtils;
   private final PetService petService;
 
   @PostMapping(value = "",
@@ -51,24 +53,27 @@ public class PetApi {
   public ResponseEntity<Void> create(
       @RequestPart("pet_upload") @Valid PetCreationRequest request,
       @RequestPart("main_image") MultipartFile image) throws FileUploadException {
-    petService.create(request, image);
+    Member loginMember = securityContextUtils.getLoginMember();
+    petService.create(request, image, loginMember);
 
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
   @GetMapping(value = "/list")
   public ResponseEntity<CommonPagingResponse<PetDto>> findList(
-      @Valid @RequestBody PagingCommonImplRequest request
+      @Valid @RequestBody PagingPetRequest request
   ) {
     CommonPagingResponse<PetDto> pets = petService.findPagingList(request);
     return new ResponseEntity<>(pets, HttpStatus.OK);
   }
 
-  @PutMapping(value = "/{petId}/like")
-  public ResponseEntity<Void> like(
+  @PutMapping(value = "/{petId}/follow")
+  public ResponseEntity<Void> follow(
       @PathVariable(value = "petId") final Long petId
   ) {
-    petService.like(petId);
+    Member loginMember = securityContextUtils.getLoginMember();
+
+    petService.addFollower(petId, loginMember);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 

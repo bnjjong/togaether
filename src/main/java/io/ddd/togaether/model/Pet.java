@@ -12,10 +12,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,6 +54,14 @@ public class Pet extends AuditEntity {
   @JoinColumn(name = "member_id")
   @ToString.Exclude
   private Member owner;
+
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name = "follower_following",
+      joinColumns = @JoinColumn(name = "pet_id"),
+      inverseJoinColumns = @JoinColumn(name = "member_id")
+  )
+  @ToString.Exclude
+  private Set<Member> follower = new HashSet<>();
 
   @Column
   private String name;
@@ -89,7 +101,7 @@ public class Pet extends AuditEntity {
   private String etc;
 
   @Column
-  private int likeCount = 0;
+  private int followerCount = 0;
 
 
   @Builder
@@ -106,7 +118,12 @@ public class Pet extends AuditEntity {
     this.etc = etc;
   }
 
-  public void addLike() {
-    this.likeCount++;
+  public void addFollower(Member memberBy) {
+    if (follower.contains(memberBy)) {
+      throw new IllegalStateException("this member already follow." + memberBy.getEmail());
+    }
+    this.follower.add(memberBy);
+    this.followerCount++;
   }
+
 }
