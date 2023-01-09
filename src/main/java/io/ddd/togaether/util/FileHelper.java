@@ -29,6 +29,37 @@ public class FileHelper {
 
   }
 
+  /**
+   * <p>
+   * 해당 경로에서 파일을 읽어와 파일 객체를 리턴해 준다.
+   * </p>
+   *
+   * @param path 파일 경로
+   * @return {@code File} 해당 {@code path}에서 읽어온 {@code File} 객체를 리턴 한다.
+   * @throws FileReadException 파일을 읽다가 에러가 발생한 경우
+   * @see File
+   */
+  public static File getFileFromResource(final String path) throws FileReadException {
+    try {
+      URL res = FileHelper.class.getClassLoader().getResource(path);
+
+      if (res == null) {
+        throw new IllegalArgumentException("path is not valid!>>>" + path);
+      }
+      return Paths.get(res.toURI()).toFile();
+    } catch (Exception e) {
+      InputStream in = FileHelper.class.getClassLoader().getResourceAsStream(path);
+      try {
+        if (in != null) {
+          return convertInputStreamToFile(in);
+        }
+        throw new IOException("input stream is null");
+      } catch (IOException ioException) {
+        throw new FileReadException(e);
+      }
+    }
+  }
+
   public static String getResourcePath() throws FileReadException {
     final String path = "images";
     try {
