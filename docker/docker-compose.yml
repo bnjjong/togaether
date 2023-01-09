@@ -6,7 +6,7 @@ volumes:
     driver: local
 services:
   db:
-    container_name: bigin-mariadb
+    container_name: togaether-mariadb
     image: mariadb:10.4
     restart: always
     ports:
