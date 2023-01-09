@@ -1,7 +1,21 @@
+### 로그인
+POST {{host}}:{{port}}/sign-in/member
+Content-Type: application/json
+
+{
+  "email": "jongsang@tagether.io",
+  "password": "abcd1234"
+}
+
+> {% //response handler
+  client.global.set("token", response.body.jwt.access_token); // (1)
+  client.log("token : " + client.global.get("token")); // (2)
+%}
+
 ### 펫 등록
 POST {{host}}:{{port}}/pet
 Content-Type: multipart/form-data; boundary=boundary;
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb25nc2FuZ0BuYXZlci5jb20iLCJpc3MiOiJUT0dBRVRIRVIiLCJhdWQiOiJVU0VSIiwicm9sZXMiOlsiTk9STUFMIl0sImlhdCI6MTY3Mjg5NDYzNywiZXhwIjoxNzA0NDMwNjM3fQ.fVm0CKCAcpyWxdxxy-M_l_hsPijRZEmfYSZ9JDam82o
+Authorization: Bearer {{token}}
 
 
 --boundary
@@ -25,14 +39,14 @@ Content-Type: application/json
 
 
 ### 펫 메인 이미지 조회
-GET {{host}}:{{port}}/pet/main-image/1
+GET {{host}}:{{port}}/pet/main-image/3
 Content-Type: image/jpeg, image/png
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb25nc2FuZ0BuYXZlci5jb20iLCJpc3MiOiJUT0dBRVRIRVIiLCJhdWQiOiJVU0VSIiwicm9sZXMiOlsiTk9STUFMIl0sImlhdCI6MTY3Mjg5NDYzNywiZXhwIjoxNzA0NDMwNjM3fQ.fVm0CKCAcpyWxdxxy-M_l_hsPijRZEmfYSZ9JDam82o
+Authorization: Bearer {{token}}
 
 ### 펫 조회 (페이징)
 GET {{host}}:{{port}}/pet/list
 Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb25nc2FuZ0BuYXZlci5jb20iLCJpc3MiOiJUT0dBRVRIRVIiLCJhdWQiOiJVU0VSIiwicm9sZXMiOlsiTk9STUFMIl0sImlhdCI6MTY3Mjg5NDYzNywiZXhwIjoxNzA0NDMwNjM3fQ.fVm0CKCAcpyWxdxxy-M_l_hsPijRZEmfYSZ9JDam82o
+Authorization: Bearer {{token}}
 
 {
 
@@ -40,9 +54,22 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb25nc2FuZ
   "current_page" : 1
 }
 
-### 펫 좋아요.
-PUT {{host}}:{{port}}/pet/1/like
+
+### 펫 조회2 (페이징) 좋아요 높은 순
+GET {{host}}:{{port}}/pet/list
 Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb25nc2FuZ0BuYXZlci5jb20iLCJpc3MiOiJUT0dBRVRIRVIiLCJhdWQiOiJVU0VSIiwicm9sZXMiOlsiTk9STUFMIl0sImlhdCI6MTY3Mjg5NDYzNywiZXhwIjoxNzA0NDMwNjM3fQ.fVm0CKCAcpyWxdxxy-M_l_hsPijRZEmfYSZ9JDam82o
+Authorization: Bearer {{token}}
+
+{
+
+  "page_size" : 10,
+  "current_page" : 1,
+  "pet_order_by" : "LIKE_COUNT_DESC"
+}
+
+### 팔로우
+PUT {{host}}:{{port}}/pet/1/follow
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
 

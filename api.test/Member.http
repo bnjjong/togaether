@@ -3,8 +3,8 @@ POST {{host}}:{{port}}/member
 Content-Type: application/json
 
 {
-  "email": "jongsang@naver.com",
-  "password": "abcd!23$",
+  "email": "jongsang@tagether.io",
+  "password": "abcd1234",
   "name": "한종상",
   "birth": "1985-06-19"
 }
@@ -14,19 +14,19 @@ POST {{host}}:{{port}}/sign-in/member
 Content-Type: application/json
 
 {
-  "email": "jongsang@naver.com",
-  "password": "abcd!23$"
+  "email": "jongsang@tagether.io",
+  "password": "abcd1234"
 }
 
 > {% //response handler
-  client.global.set("token", response.body.data.jwt); // (1)
+  client.global.set("token", response.body.jwt.access_token); // (1)
   client.log("token : " + client.global.get("token")); // (2)
 %}
 
 ### 회원 조회
-GET {{host}}:{{port}}/member/jongsang@naver.com
+GET {{host}}:{{port}}/member/jongsang@tagether.io
 Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb25nc2FuZ0BuYXZlci5jb20iLCJpc3MiOiJUT0dBRVRIRVIiLCJhdWQiOiJVU0VSIiwicm9sZXMiOlsiTk9STUFMIl0sImlhdCI6MTY3Mjg5NDYzNywiZXhwIjoxNzA0NDMwNjM3fQ.fVm0CKCAcpyWxdxxy-M_l_hsPijRZEmfYSZ9JDam82o
+Authorization: Bearer {{token}}
 
 
 
