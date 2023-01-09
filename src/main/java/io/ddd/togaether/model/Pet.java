@@ -126,4 +126,8 @@ public class Pet extends AuditEntity {
     this.followerCount++;
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    return this.id == ((Pet)obj).getId();
+  }
 }

@@ -118,6 +118,9 @@ public class PetService {
   public void addFollower(Long petId, Member memberBy) {
     Pet pet = petRepository.findById(petId)
         .orElseThrow(() -> new EntityNotFoundException("pet id is not found : " + petId));
+    if (memberBy.getPets().contains(pet) ) {
+      throw new IllegalStateException("it is not allowed to follow my pet.");
+    }
     pet.addFollower(memberBy);
 
     // logging

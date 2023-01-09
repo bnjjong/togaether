@@ -64,7 +64,7 @@ Authorization: Bearer {{token}}
 
   "page_size" : 10,
   "current_page" : 1,
-  "pet_order_by" : "LIKE_COUNT_DESC"
+  "pet_order_by" : "FOLLOWER_COUNT_DESC"
 }
 
 ### 팔로우
