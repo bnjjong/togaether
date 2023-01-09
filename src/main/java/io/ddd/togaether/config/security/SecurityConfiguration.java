@@ -60,7 +60,8 @@ public class SecurityConfiguration {
         .requestMatchers("/config/**").permitAll()
         .requestMatchers("/system/hc").permitAll()
         .requestMatchers(HttpMethod.POST, "/member").permitAll() //회원 가입
-        .requestMatchers( "/**").permitAll() // 전체 허용 일단.
+        .requestMatchers(HttpMethod.POST, "/sign-in/member").permitAll() //로그인
+//        .requestMatchers( "/**").permitAll() // 전체 허용 일단.
         .anyRequest().authenticated()
         .and()
         .exceptionHandling()

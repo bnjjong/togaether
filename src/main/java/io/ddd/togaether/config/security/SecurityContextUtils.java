@@ -39,15 +39,17 @@ public class SecurityContextUtils {
    * @return login member entity.
    */
   public Member getLoginMember() {
-//    String email = SecurityContextHolder.getContext().getAuthentication().getName();
-//    Member member = memberRepository.findByEmail(email)
-//        .orElseThrow(() -> {
-//          throw new EntityNotFoundException("login member is not found.");
-//        });
-    // loading.
-    return memberRepository.findByEmail("jongsang@naver.com")
+    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    Member member = memberRepository.findByEmail(email)
         .orElseThrow(() -> {
           throw new EntityNotFoundException("login member is not found.");
         });
+    // loading.
+    member.getPets();
+    return member;
+//    return memberRepository.findByEmail("jongsang@naver.com")
+//        .orElseThrow(() -> {
+//          throw new EntityNotFoundException("login member is not found.");
+//        });
   }
 }
