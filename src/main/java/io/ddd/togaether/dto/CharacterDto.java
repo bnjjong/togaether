@@ -10,9 +10,11 @@ package io.ddd.togaether.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.ToString;
 
 /**
@@ -31,10 +33,19 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 @JsonNaming(SnakeCaseStrategy.class)
 public class CharacterDto {
+
+  /**
+   * 코드 명 (API 요청시 사용)
+   */
+  @NotBlank
   private String codeName;
+  /**
+   * 한국어
+   */
+  @NotBlank
   private String korName;
 
-  public CharacterDto(String codeName, String korName) {
+  public CharacterDto(@NonNull String codeName, @NonNull String korName) {
     this.codeName = codeName;
     this.korName = korName;
   }

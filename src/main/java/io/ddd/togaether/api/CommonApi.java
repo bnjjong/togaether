@@ -31,6 +31,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CommonApi {
 
+  /**
+   * <p> 모든 강아지 종을 조회 한다. </p>
+   *
+   * @return {@code ResponseEntity}
+   */
   @GetMapping("/species-all")
   public ResponseEntity<List<SpeciesDto>> retrieveAllSpecies() {
     List<SpeciesDto> speciesDtos = Species.getAll().stream()
@@ -40,9 +45,15 @@ public class CommonApi {
     return new ResponseEntity<>(speciesDtos, HttpStatus.OK);
   }
 
+  /**
+   * <p> 강아지 종을 조회 한다. </p>
+   *
+   * @param keyword support only kor_name, index_code.
+   * @return {@code ResponseEntity}
+   */
   @GetMapping("/species/{keyword}")
   public ResponseEntity<List<SpeciesDto>> retrieveSpecies(
-      @PathVariable(value = "keyword") final String keyword
+      @PathVariable(value = "keyword" ) final String keyword
   ) {
     List<SpeciesDto> speciesDtos = Species.getAll().stream()
         .filter(s -> s.getKorName().contains(keyword) || s.getIndexCode().equals(keyword))
@@ -52,6 +63,12 @@ public class CommonApi {
     return new ResponseEntity<>(speciesDtos, HttpStatus.OK);
   }
 
+
+  /**
+   * <p> 모든 강아지 성격을 조회 한다. </p>
+   *
+   * @return {@code ResponseEntity}
+   */
   @GetMapping("/characters-all")
   public ResponseEntity<List<CharacterDto>> retrieveAllCharacters() {
     List<CharacterDto> characters = Character.getAll().stream()

@@ -2,6 +2,7 @@ package io.ddd.togaether.api;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+import io.ddd.togaether.config.security.SecurityContextUtils;
 import io.ddd.togaether.dto.MemberDto;
 import io.ddd.togaether.dto.PetDto;
 import io.ddd.togaether.dto.SignupRequest;
@@ -44,28 +45,45 @@ import org.springframework.web.multipart.MultipartFile;
 public class MemberApi {
   private final MemberService memberService;
 
+  private final SecurityContextUtils securityContextUtils;
+
 
   /**
-   * 회원 가입
-   * @param request
-   * @return
+   * 회원 가입 요청.
+   *
+   * @param request signup request dto.
+   * @return @return {@code ResponseEntity}
    */
   @PostMapping(value = "", produces = APPLICATION_JSON_VALUE)
-  public String create(@Valid @RequestBody SignupRequest request) {
+  public ResponseEntity<MemberDto> create(@Valid @RequestBody SignupRequest request) {
     MemberDto memberDto = memberService.create(request);
-    return "created member, " + memberDto;
+    System.out.println(memberDto);
+    return new ResponseEntity<>(memberDto, HttpStatus.CREATED);
   }
 
+  /**
+   * 프로필 사진 업로드 요청.
+   *
+   * @param profilePicture 프로필 사진.
+   * @return {@code ResponseEntity}
+   * @throws FileUploadException 파일 업로드 실패 시
+   */
   @PostMapping(value = "/upload-picture",
       consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE
   )
   public ResponseEntity<Void> uploadProfilePicture(
-      @RequestParam final MultipartFile profile) throws FileUploadException {
-    memberService.uploadProfilePicture(profile);
+      @RequestParam(name = "profile_picture") final MultipartFile profilePicture) throws FileUploadException {
+    memberService.uploadProfilePicture(securityContextUtils.getLoginMember(), profilePicture);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
+  /**
+   * <p>E-mail 로 회원 조회.</p>
+   *
+   * @param email 조회할 E-mail
+   * @return {@code ResponseEntity}
+   */
   @GetMapping(value = "/{email}", produces = APPLICATION_JSON_VALUE)
   public ResponseEntity<MemberDto> retrieveMember(@PathVariable(value = "email") final String email) {
     MemberDto dto = memberService.findByEmail(email);
@@ -73,19 +91,30 @@ public class MemberApi {
   }
 
 
+  /**
+   * <p> 내 프로필 사진 조회 </p>
+   *
+   * @return {@code byte} image file byte.
+   * @throws IOException
+   */
   @GetMapping(
       value = "/my-profile-picture",
       produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE}
   )
-  public byte[] retrieveProfile() throws IOException {
-    try (InputStream in = memberService.retrieveMyProfilePictureInputStream()) {
+  public byte[] retrieveProfilePicture() throws IOException {
+    try (InputStream in = memberService.retrieveMyProfilePictureInputStream(securityContextUtils.getLoginMember())) {
       return IOUtils.toByteArray(in);
     }
   }
 
+  /**
+   * <p> 내가 등록한 펫(강아지) 조회 </p>
+   *
+   * @return {@code ResponseEntity}
+   */
   @GetMapping(value = "/my-pets")
   public ResponseEntity<List<PetDto>> findAll() {
-    List<PetDto> pets = memberService.findMyPets();
+    List<PetDto> pets = memberService.findMyPets(securityContextUtils.getLoginMember());
     return new ResponseEntity<>(pets, HttpStatus.OK);
   }
 

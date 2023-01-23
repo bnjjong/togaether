@@ -50,4 +50,13 @@ public class MemberFixture {
         .build();
   }
 
+  public static SignupRequest memberForTest() {
+    return SignupRequest.builder()
+        .email("test@tagether.io")
+        .password("Abcd!23$")
+        .name("test")
+        .birth(LocalDate.of(1999,1,1))
+        .build();
+  }
+
 }
