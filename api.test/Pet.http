@@ -68,7 +68,7 @@ Authorization: Bearer {{token}}
 }
 
 ### 팔로우
-PUT {{host}}:{{port}}/pet/1/follow
+PUT {{host}}:{{port}}/pet/4/follow
 Content-Type: application/json
 Authorization: Bearer {{token}}
 

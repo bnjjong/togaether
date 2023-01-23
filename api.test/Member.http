@@ -3,10 +3,10 @@ POST {{host}}:{{port}}/member
 Content-Type: application/json
 
 {
-  "email": "jongsang@tagether.io",
+  "email": "apitest@tagether.io",
   "password": "abcd1234",
-  "name": "한종상",
-  "birth": "1985-06-19"
+  "name": "api-tester",
+  "birth": "2023-01-15"
 }
 
 ### 로그인
@@ -34,10 +34,10 @@ Authorization: Bearer {{token}}
 ### 내 프사 Upload
 POST {{host}}:{{port}}/member/upload-picture
 Content-Type: multipart/form-data; boundary=boundary
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb25nc2FuZ0BuYXZlci5jb20iLCJpc3MiOiJUT0dBRVRIRVIiLCJhdWQiOiJVU0VSIiwicm9sZXMiOlsiTk9STUFMIl0sImlhdCI6MTY3Mjg5NDYzNywiZXhwIjoxNzA0NDMwNjM3fQ.fVm0CKCAcpyWxdxxy-M_l_hsPijRZEmfYSZ9JDam82o
+Authorization: Bearer {{token}}
 
 --boundary
-Content-Disposition: form-data; name="profile"; filename="profile.png"
+Content-Disposition: form-data; name="profile_picture"; filename="profile.png"
 Content-Type: application/json
 
 < profile.png
@@ -45,10 +45,10 @@ Content-Type: application/json
 ### 내 프로필 사진 조회
 GET {{host}}:{{port}}/member/my-profile-picture
 Content-Type: image/jpeg, image/png
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb25nc2FuZ0BuYXZlci5jb20iLCJpc3MiOiJUT0dBRVRIRVIiLCJhdWQiOiJVU0VSIiwicm9sZXMiOlsiTk9STUFMIl0sImlhdCI6MTY3Mjg5NDYzNywiZXhwIjoxNzA0NDMwNjM3fQ.fVm0CKCAcpyWxdxxy-M_l_hsPijRZEmfYSZ9JDam82o
+Authorization: Bearer {{token}}
 
 
 ### 나의 펫 조회
 GET {{host}}:{{port}}/member/my-pets
 Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb25nc2FuZ0BuYXZlci5jb20iLCJpc3MiOiJUT0dBRVRIRVIiLCJhdWQiOiJVU0VSIiwicm9sZXMiOlsiTk9STUFMIl0sImlhdCI6MTY3Mjg5NDYzNywiZXhwIjoxNzA0NDMwNjM3fQ.fVm0CKCAcpyWxdxxy-M_l_hsPijRZEmfYSZ9JDam82o
+Authorization: Bearer {{token}}
