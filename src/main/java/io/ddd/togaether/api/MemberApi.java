@@ -113,7 +113,7 @@ public class MemberApi {
    * @return {@code ResponseEntity}
    */
   @GetMapping(value = "/my-pets")
-  public ResponseEntity<List<PetDto>> findAll() {
+  public ResponseEntity<List<PetDto>> retrieveAllMyPets() {
     List<PetDto> pets = memberService.findMyPets(securityContextUtils.getLoginMember());
     return new ResponseEntity<>(pets, HttpStatus.OK);
   }

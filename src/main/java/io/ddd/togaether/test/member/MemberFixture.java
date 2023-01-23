@@ -8,6 +8,7 @@
 
 package io.ddd.togaether.test.member;
 
+import io.ddd.togaether.dto.MemberDto;
 import io.ddd.togaether.dto.SignupRequest;
 import java.time.LocalDate;
 
@@ -23,7 +24,7 @@ import java.time.LocalDate;
  * @since 1.0
  */
 public class MemberFixture {
-  public static SignupRequest member1() {
+  public static SignupRequest memberForSignup1() {
     return SignupRequest.builder()
         .email("jongsang@tagether.io")
         .password("abcd1234")
@@ -32,7 +33,7 @@ public class MemberFixture {
         .build();
   }
 
-  public static SignupRequest member2() {
+  public static SignupRequest memberForSignup2() {
     return SignupRequest.builder()
         .email("taein@tagether.io")
         .password("abcd1234")
@@ -41,7 +42,7 @@ public class MemberFixture {
         .build();
   }
 
-  public static SignupRequest member3() {
+  public static SignupRequest memberForSignup3() {
     return SignupRequest.builder()
         .email("jamit@tagether.io")
         .password("abcd1234")
@@ -50,13 +51,21 @@ public class MemberFixture {
         .build();
   }
 
-  public static SignupRequest memberForTest() {
+  public static SignupRequest memberForSignupTest() {
     return SignupRequest.builder()
         .email("test@tagether.io")
         .password("Abcd!23$")
         .name("test")
         .birth(LocalDate.of(1999,1,1))
         .build();
+  }
+
+  public static MemberDto memberDto1() {
+    return new MemberDto(1L,
+        "jongsang@tagether.io",
+        "Henry",
+        LocalDate.of(1985,6,19)
+        );
   }
 
 }

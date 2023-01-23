@@ -16,6 +16,7 @@ import capital.scalable.restdocs.jackson.JacksonResultHandlers;
 import capital.scalable.restdocs.response.ResponseModifyingPreprocessors;
 import capital.scalable.restdocs.section.SectionBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.List;
@@ -74,7 +75,7 @@ public abstract class CommonApiUnitTest {
 
   @BeforeEach
   public void setup(RestDocumentationContextProvider provider) {
-    this.objectMapper = new ObjectMapper();
+    this.objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     this.objectMapper.registerModule(new JavaTimeModule());
 
 

@@ -20,3 +20,8 @@ include::{snippets}/member-upload-profile-picture/success/auto-section.adoc[]
 == `R` E-mail로 회원 조회
 include::{snippets}/member-retrieve-member/success/auto-section.adoc[]
 
+== `R` 본인 프로필 사진 조회 (로그인 한 사용자)
+include::{snippets}/member-retrieve-profile-picture/success/auto-section.adoc[]
+
+== `R` 본인 전체 펫 조회 (로그인 한 사용자)
+include::{snippets}/member-retrieve-all-my-pets/success/auto-section.adoc[]
