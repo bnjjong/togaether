@@ -15,6 +15,7 @@ import io.ddd.togaether.dao.PetRepository;
 import io.ddd.togaether.dto.SignupRequest;
 import io.ddd.togaether.model.Member;
 import io.ddd.togaether.service.MemberService;
+import io.ddd.togaether.service.MemberServiceImpl;
 import io.ddd.togaether.service.PetService;
 import io.ddd.togaether.test.member.MemberFixture;
 import io.ddd.togaether.test.pet.PetFixture;
@@ -68,7 +69,6 @@ public class InitData {
       addPetLike();
     } catch (Exception e) {
       e.printStackTrace();
-      log.error("error : {}", e.getStackTrace());
       log.error("init data error!");
       log.error("error : {}", e.getMessage());
     }
