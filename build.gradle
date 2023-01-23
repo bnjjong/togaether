@@ -4,6 +4,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.0'
     id 'org.hibernate.orm' version '6.1.5.Final'
     id 'org.graalvm.buildtools.native' version '0.9.18'
+    id "org.asciidoctor.jvm.convert" version "2.4.0"
 }
 
 group = 'io.ddd'
@@ -14,6 +15,12 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExtensions
+    jsondoclet
+}
+ext {
+    snippetsDir = file("$buildDir/generated-snippets") // snippet 이 생성될 디렉토리 지정
+    javadocJsonDir = file("$buildDir/generated-javadoc-json") // javadoc-json 이 생성될 디렉토리 지정
 }
 
 repositories {
@@ -64,6 +71,23 @@ dependencies {
     // jwt decode시 jdk 11이상에서 문제 발생하여 bind library 추가
     // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
+
+    // https://mvnrepository.com/artifact/net.sf.json-lib/json-lib
+    implementation group: 'net.sf.json-lib', name: 'json-lib', classifier:'jdk15', version: '2.4'
+
+
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3'
+
+    // rest doc
+    // auto restdoc
+    testImplementation 'capital.scalable:spring-auto-restdocs-core:2.0.11'
+    jsondoclet 'capital.scalable:spring-auto-restdocs-json-doclet-jdk9:2.0.11'
+//    jsondoclet group: 'capital.scalable', name: 'spring-auto-restdocs-json-doclet', version: '2.0.11'
+    // MockMvc 대신 REST Assured를 사용하려면 spring-restdocs-restassured 를 추가
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+
 }
 
 tasks.named('test') {
@@ -78,3 +102,50 @@ hibernate {
     }
 }
 
+
+task jsonDoclet(type: Javadoc, dependsOn: compileJava) {
+    source = sourceSets.main.allJava
+    classpath = sourceSets.main.compileClasspath
+    destinationDir = javadocJsonDir
+    options.docletpath = configurations.jsondoclet.files.asType(List)
+    options.doclet = 'capital.scalable.restdocs.jsondoclet.ExtractDocumentationAsJsonDoclet'
+    options.memberLevel = JavadocMemberLevel.PACKAGE
+}
+
+// 테스트 실행 후, snipperDir에 snippet(.adoc 파일들) 생성
+test {
+    systemProperty 'org.springframework.restdocs.outputDir', snippetsDir
+    systemProperty 'org.springframework.restdocs.javadocJsonDir', javadocJsonDir
+
+    dependsOn jsonDoclet
+    useJUnitPlatform()
+//    finalizedBy 'asciidoctor'
+}
+
+// src/docs/asciidoc/*.adoc 파일을 build/docs/asciidoc에 *.html 파일로 변환
+asciidoctor {
+    inputs.dir snippetsDir
+    dependsOn test
+
+    // source가 없으면 .adoc파일을 전부 html로 만들어버림
+    // source 지정시 특정 adoc만 HTML로 만든다.
+//    sources{
+//        include("**/index.adoc","**/common/*.adoc")
+//    }
+
+    // 특정 .adoc에 다른 adoc 파일을 가져와서(include) 사용하고 싶을 경우 경로를 baseDir로 맞춰주는 설정입니다.
+    // 개별 adoc으로 운영한다면 필요 없는 옵션입니다.
+//    baseDirFollowsSourceFile()
+}
+
+// 참고사항
+// 공식 문서에서는 위의 ascidoctor.doFirst부터 아래 내용은 없고 이와 같은 내용만 있습니다.
+// 이렇게 하면 jar로 만들어 질때 옮겨지는 것으로 IDE로 돌릴 때는 build 폴더에서만 확인이 가능합니다.
+// 위 방법을 사용하면 IDE에서도 static으로 옮겨진 것을 확인할 수 있습니다.
+// 위에 방법을 사용하든 아래 방법을 사용하든 편한 선택지를 사용하시면 됩니다.
+bootJar {
+    dependsOn asciidoctor
+}
+
+
+// ============================== end rest doc ==============================

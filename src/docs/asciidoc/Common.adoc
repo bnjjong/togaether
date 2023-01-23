@@ -1,0 +1,22 @@
+ifndef::snippets[]
+:snippets: build/generated-snippets
+endif::[]
+
+= Common API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:docinfo: shared-head
+
+== `R` 모든 강아지 종 조회
+include::{snippets}/common-retrieve-all-species/success/auto-section.adoc[]
+
+== `R` 강아지 종 검색 (키워드 or 인덱스)
+`kor_name`, `index_code` 만 지원.
+include::{snippets}/common-retrieve-species/success/auto-section.adoc[]
+
+== `R` 모든 성격 조회
+include::{snippets}/common-retrieve-all-characters/success/auto-section.adoc[]

@@ -1,0 +1,22 @@
+ifndef::snippets[]
+:snippets: build/generated-snippets
+endif::[]
+
+= Member API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:docinfo: shared-head
+
+== `C` 회원 가입
+include::{snippets}/member-create/success/auto-section.adoc[]
+
+== `U` 회원 사진 업로드
+include::{snippets}/member-upload-profile-picture/success/auto-section.adoc[]
+
+== `R` E-mail로 회원 조회
+include::{snippets}/member-retrieve-member/success/auto-section.adoc[]
+
