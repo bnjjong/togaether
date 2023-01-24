@@ -21,7 +21,6 @@ import io.ddd.togaether.test.pet.PetFixture;
 import io.ddd.togaether.util.FileHelper;
 import io.ddd.togaether.util.FileReadException;
 import jakarta.annotation.PostConstruct;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;

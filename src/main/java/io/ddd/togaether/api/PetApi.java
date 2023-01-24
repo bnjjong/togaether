@@ -44,8 +44,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class PetApi {
 
-  private final SecurityContextUtils securityContextUtils;
   private final PetService petService;
+  private final SecurityContextUtils securityContextUtils;
 
   @PostMapping(value = "",
       consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE},
@@ -60,7 +60,7 @@ public class PetApi {
   }
 
   @GetMapping(value = "/list")
-  public ResponseEntity<CommonPagingResponse<PetDto>> findList(
+  public ResponseEntity<CommonPagingResponse<PetDto>> retrieveList(
       @Valid @RequestBody PagingPetRequest request
   ) {
     CommonPagingResponse<PetDto> pets = petService.findPagingList(request);

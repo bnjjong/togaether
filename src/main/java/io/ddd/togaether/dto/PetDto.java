@@ -1,5 +1,6 @@
 package io.ddd.togaether.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import io.ddd.togaether.model.Character;
@@ -60,6 +61,7 @@ public class PetDto {
   /**
    * 생년 월일.
    */
+  @JsonFormat(pattern = "yyyy-MM-dd")
   private LocalDate birth;
 
   /**
@@ -81,7 +83,7 @@ public class PetDto {
    */
   private int followerCount;
 
-  public PetDto(Long id, Member owner, String name, Species species, Character petCharacter,
+  public PetDto(Long id, String name, Species species, Character petCharacter,
       Gender gender, LocalDate birth, String mainImage,
       String description, String etc, int followerCount) {
     this.id = id;

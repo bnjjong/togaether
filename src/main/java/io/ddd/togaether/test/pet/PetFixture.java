@@ -8,6 +8,8 @@
 
 package io.ddd.togaether.test.pet;
 
+import io.ddd.togaether.dto.PetCreationRequest;
+import io.ddd.togaether.dto.PetDto;
 import io.ddd.togaether.model.Character;
 import io.ddd.togaether.model.Gender;
 import io.ddd.togaether.model.Member;
@@ -29,6 +31,28 @@ import java.time.LocalDate;
  * @since 1.0
  */
 public class PetFixture {
+  public static PetCreationRequest retrieverForCreation() {
+    return new PetCreationRequest(
+        "동력이",
+        Species.GOLDEN_RETRIEVER,
+        Character.ENERGETIC,
+        Gender.MALE,
+        LocalDate.of(2020,1,20),
+        "꼬리로 하늘을 날수 있음.",
+        ""
+    );
+  }
+
+  public static PetDto retrieverDto() {
+    return new PetDto(1L,"동력이",Species.GOLDEN_RETRIEVER, Character.ENERGETIC,
+        Gender.MALE,
+        LocalDate.of(2020,1,20),
+        "",
+        "꼬리로 하늘을 날수 있음.",
+        "",
+        10);
+  }
+
 
   public static Pet retriever(Member owner) throws FileReadException {
     return Pet.builder()

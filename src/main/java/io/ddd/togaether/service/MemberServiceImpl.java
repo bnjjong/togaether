@@ -1,6 +1,5 @@
 package io.ddd.togaether.service;
 
-import io.ddd.togaether.config.security.SecurityContextUtils;
 import io.ddd.togaether.dao.MemberRepository;
 import io.ddd.togaether.dto.MemberDto;
 import io.ddd.togaether.dto.PetDto;
