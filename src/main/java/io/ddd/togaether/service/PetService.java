@@ -14,8 +14,7 @@ import io.ddd.togaether.dto.paging.CommonPagingResponse;
 import io.ddd.togaether.dto.paging.PagingPetRequest;
 import io.ddd.togaether.model.Member;
 import io.ddd.togaether.model.Pet;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.IOException;
 import java.util.List;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,7 +34,7 @@ public interface PetService {
   void create(PetCreationRequest request, MultipartFile image, Member owner)
       throws FileUploadException;
 
-  InputStream retrievePetMainImage(Long petId) throws FileNotFoundException;
+  String retrievePetMainImagePath(Long petId) throws IOException;
   CommonPagingResponse<PetDto> findPagingList(PagingPetRequest request);
 
   void addFollower(Long petId, Member memberBy);

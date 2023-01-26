@@ -8,13 +8,13 @@
 
 package io.ddd.togaether.api;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -22,15 +22,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import io.ddd.togaether.config.CommonApiUnitTest;
 import io.ddd.togaether.config.GlobalControllerExceptionHandler;
 import io.ddd.togaether.config.security.SecurityContextUtils;
-import io.ddd.togaether.dto.MemberDto;
-import io.ddd.togaether.dto.PetCreationRequest;
-import io.ddd.togaether.dto.SignupRequest;
 import io.ddd.togaether.dto.paging.CommonPagingResponse;
 import io.ddd.togaether.dto.paging.PagingPetRequest;
 import io.ddd.togaether.dto.paging.PetOrderBy;
+import io.ddd.togaether.model.Member;
 import io.ddd.togaether.service.PetService;
 import io.ddd.togaether.test.member.MemberFixture;
 import io.ddd.togaether.test.pet.PetFixture;
+import io.ddd.togaether.util.FileHelper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
@@ -106,7 +105,7 @@ class PetApiTest extends CommonApiUnitTest {
   }
 
   @Nested
-  class PetReterieveList {
+  class PetRetrieveList {
 
     @Test
     @DisplayName("펫 페이징 조회")
@@ -131,10 +130,57 @@ class PetApiTest extends CommonApiUnitTest {
               status().isOk()
           )
           .andDo(print());
-
-
     }
+  }
 
+  @Nested
+  class PetFollow {
+
+    @Test
+    @DisplayName("펫 팔로우")
+    void success() throws Exception {
+      // given
+      Long petId = 1L;
+      given(securityContextUtils.getLoginMember()).willReturn(
+          objectMapper.convertValue(MemberFixture.memberForSignupTest(), Member.class)
+      );
+
+      // when then
+      mvc.perform(put(baseUrl+"/"+petId+"/follow")
+              .with(userToken())
+              .contentType(MediaType.APPLICATION_JSON)
+          )
+          // then
+          .andExpectAll(
+              status().isOk()
+          )
+          .andDo(print());
+    }
+  }
+
+
+  @Nested
+  class PetRetrieveMainImage {
+    @Test
+    @DisplayName("펫 메인 이미지 조회")
+    void success() throws Exception {
+      // given
+      Long petId = 1L;
+      given(petService.retrievePetMainImagePath(any())).willReturn(
+          FileHelper.getFileFromResource("test/Retriever.png").toString()
+      );
+
+      //when then
+      mvc.perform(get(baseUrl+"/main-image/"+petId)
+//              .contentType(MediaType.IMAGE_PNG_VALUE)
+              )
+          // then
+          .andExpectAll(
+              status().isOk(),
+              content().contentType(MediaType.IMAGE_PNG_VALUE)
+          )
+          .andDo(print());
+    }
   }
 
 

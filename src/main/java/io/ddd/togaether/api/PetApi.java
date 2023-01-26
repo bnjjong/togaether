@@ -9,11 +9,14 @@ import io.ddd.togaether.model.Member;
 import io.ddd.togaether.service.PetService;
 import jakarta.validation.Valid;
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +50,14 @@ public class PetApi {
   private final PetService petService;
   private final SecurityContextUtils securityContextUtils;
 
+  /**
+   * <p> 펫을 생성 한다.</p>
+   *
+   * @param request 생성할 펫 요청 정보.
+   * @param image 메인 이미지 파일.
+   * @return {@code ResponseEntity}.
+   * @throws FileUploadException
+   */
   @PostMapping(value = "",
       consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE},
       produces = MediaType.APPLICATION_JSON_VALUE)
@@ -67,6 +78,11 @@ public class PetApi {
     return new ResponseEntity<>(pets, HttpStatus.OK);
   }
 
+  /**
+   * <p> 해당 펫을 팔로우 한다. </p>
+   * @param petId 팔로우 할 펫 아이디.
+   * @return {@code ResponseEntity}.
+   */
   @PutMapping(value = "/{petId}/follow")
   public ResponseEntity<Void> follow(
       @PathVariable(value = "petId") final Long petId
@@ -78,16 +94,27 @@ public class PetApi {
   }
 
 
+  /**
+   * <p> 펫 메인 이미지를 조회 한다.</p>
+   *
+   * @param petId 펫 아이디
+   * @return {@code ResponseEntity} with image resource.
+   * @throws IOException
+   */
   @GetMapping(
       value = "/main-image/{petId}",
       produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE}
   )
-  public byte[] getmainImage(
+  public ResponseEntity<Resource> retrieveMainImage(
       @PathVariable(value = "petId") final Long petId
   ) throws IOException {
-    try (InputStream in = petService.retrievePetMainImage(petId)) {
-      return IOUtils.toByteArray(in);
-    }
+
+    String imagePath = petService.retrievePetMainImagePath(petId);
+    MediaType mediaType = MediaType.parseMediaType(Files.probeContentType(Paths.get(imagePath)));
+    UrlResource resource = new UrlResource("file:" + imagePath);
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_TYPE, mediaType.toString())
+        .body(resource);
   }
 
 

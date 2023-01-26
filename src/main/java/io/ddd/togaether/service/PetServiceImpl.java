@@ -13,9 +13,7 @@ import io.ddd.togaether.model.Pet;
 import io.ddd.togaether.util.FileHelper;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -93,7 +91,7 @@ public class PetServiceImpl implements PetService {
   }
 
   @Override
-  public InputStream retrievePetMainImage(Long petId) throws FileNotFoundException {
+  public String retrievePetMainImagePath(Long petId) throws IOException {
 //    Member member = securityContextUtils.getLoginMember();
 //    boolean matched = member.getPets().stream()
 //        .anyMatch(p -> p.getId().equals(petId));
@@ -101,7 +99,7 @@ public class PetServiceImpl implements PetService {
     Pet pet = petRepository.findById(petId)
         .orElseThrow(() -> new EntityNotFoundException("pet is not exits by id : " + petId));
 
-    return new FileInputStream(pet.getMainImage());
+    return pet.getMainImage();
   }
 
   @Override
