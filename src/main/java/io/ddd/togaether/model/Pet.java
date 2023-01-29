@@ -130,4 +130,19 @@ public class Pet extends AuditEntity {
   public boolean equals(Object obj) {
     return this.id == ((Pet)obj).getId();
   }
+
+  public void update(@NonNull String name, @NonNull Species species, @NonNull Character petCharacter, @NonNull Gender gender,
+                     LocalDate birth, String description, String etc) {
+    this.name = name;
+    this.species = species;
+    this.petCharacter = petCharacter;
+    this.gender = gender;
+    this.birth = birth;
+    this.description = description;
+    this.etc = etc;
+  }
+  public void updateMainImage(String mainImage) {
+    this.mainImage = mainImage;
+  }
+
 }

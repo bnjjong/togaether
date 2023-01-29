@@ -13,7 +13,7 @@ Content-Type: application/json
 %}
 
 ### 펫 등록
-POST {{host}}:{{port}}/pet
+POST {{host}}:{{port}}/pet/with-image
 Content-Type: multipart/form-data; boundary=boundary;
 Authorization: Bearer {{token}}
 
@@ -37,9 +37,50 @@ Content-Type: application/json
   "etc": "한쪽눈이 불편해요."
 }
 
+### 펫 정보 등록
+POST {{host}}:{{port}}/pet
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "미미",
+  "species": "GOLDEN_DOODLE",
+  "pet_character": "FRIENDLY",
+  "gender": "FEMALE",
+  "birth": "2020-12-31",
+  "description": "차분한 강아지",
+  "etc": ""
+}
+
+### 펫 정보 업데이트
+PUT {{host}}:{{port}}/pet/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "댕댕이",
+  "species": "GOLDEN_RETRIEVER",
+  "pet_character": "ENERGETIC",
+  "gender": "MALE",
+  "birth": "2020-12-31",
+  "description": "매우 온순하지만 활력이 넘쳐요!, 추카로 먹을것에 환장 합니다.",
+  "etc": ""
+}
+
+### 펫 메인 이미지 업로드
+PUT {{host}}:{{port}}/pet/1/main-image
+Content-Type: multipart/form-data; boundary=boundary
+Authorization: Bearer {{token}}
+
+--boundary
+Content-Disposition: form-data; name="main_image"; filename="retriever2.png";
+
+< retriever2.png
+
+
 
 ### 펫 메인 이미지 조회
-GET {{host}}:{{port}}/pet/main-image/3
+GET {{host}}:{{port}}/pet/main-image/1
 Content-Type: image/jpeg, image/png
 Authorization: Bearer {{token}}
 

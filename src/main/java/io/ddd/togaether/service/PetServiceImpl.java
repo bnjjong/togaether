@@ -13,7 +13,6 @@ import io.ddd.togaether.model.Pet;
 import io.ddd.togaether.util.FileHelper;
 import jakarta.persistence.EntityNotFoundException;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -59,6 +58,7 @@ public class PetServiceImpl implements PetService {
   public void create(PetCreationRequest request, MultipartFile image, Member owner)
       throws FileUploadException {
 
+    // TODO: 2023/01/30 리팩토링 대상.
     Path uploadPath = Paths.get(
         uploadDir + File.separator
             + owner.getId() + File.separator
@@ -75,27 +75,75 @@ public class PetServiceImpl implements PetService {
       throw new FileUploadException("Could not store file : " + image.getOriginalFilename());
     }
 
-    Pet pet = Pet.builder()
-        .owner(owner)
-        .name(request.getName())
-        .species(request.getSpecies())
-        .petCharacter(request.getPetCharacter())
-        .gender(request.getGender())
-        .birth(request.getBirth())
-        .mainImage(uploadPath.toString())
-        .description(request.getDescription())
-        .etc(request.getEtc())
-        .build();
-
-    petRepository.save(pet);
+    Pet pet = create(request, owner);
+    pet.updateMainImage(uploadPath.toString());
   }
 
+  @Transactional
   @Override
-  public String retrievePetMainImagePath(Long petId) throws IOException {
-//    Member member = securityContextUtils.getLoginMember();
-//    boolean matched = member.getPets().stream()
-//        .anyMatch(p -> p.getId().equals(petId));
+  public Pet create(PetCreationRequest request, Member owner) {
+    Pet pet = Pet.builder()
+            .owner(owner)
+            .name(request.getName())
+            .species(request.getSpecies())
+            .petCharacter(request.getPetCharacter())
+            .gender(request.getGender())
+            .birth(request.getBirth())
+            .description(request.getDescription())
+            .etc(request.getEtc())
+            .build();
 
+    return petRepository.save(pet);
+  }
+
+  @Transactional
+  @Override
+  public void update(Member loginMember, Long petId, PetCreationRequest request) {
+    // TODO validation pets
+
+    Pet pet = petRepository.findById(petId)
+            .orElseThrow(() -> new EntityNotFoundException("pet id is not found : " + petId));
+
+    pet.update(
+            request.getName(),
+            request.getSpecies(),
+            request.getPetCharacter(),
+            request.getGender(),
+            request.getBirth(),
+            request.getDescription(),
+            request.getEtc()
+            );
+  }
+
+  @Transactional
+  @Override
+  public void updateMainImage(Member owner, Long petId, MultipartFile image) throws FileUploadException {
+    // TODO validation pets
+
+    Pet pet = petRepository.findById(petId)
+            .orElseThrow(() -> new EntityNotFoundException("pet id is not found : " + petId));
+    Path uploadPath = Paths.get(
+            uploadDir + File.separator
+                    + owner.getId() + File.separator
+                    + StringUtils.cleanPath(FileHelper.getFileNameServer(image)));
+
+    // file upload
+    try {
+      File file = new File(uploadPath.toString());
+
+      // *** 파일 업로드
+      FileUtils.writeByteArrayToFile(file, image.getBytes());
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new FileUploadException("Could not store file : " + image.getOriginalFilename());
+    }
+    pet.updateMainImage(uploadPath.toString());
+
+  }
+
+
+  @Override
+  public String retrievePetMainImagePath(Long petId) {
     Pet pet = petRepository.findById(petId)
         .orElseThrow(() -> new EntityNotFoundException("pet is not exits by id : " + petId));
 
@@ -147,4 +195,6 @@ public class PetServiceImpl implements PetService {
         })
         .collect(Collectors.toList());
   }
+
+
 }

@@ -33,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface PetService {
   void create(PetCreationRequest request, MultipartFile image, Member owner)
       throws FileUploadException;
+  Pet create(PetCreationRequest request, Member loginMember);
 
   String retrievePetMainImagePath(Long petId) throws IOException;
   CommonPagingResponse<PetDto> findPagingList(PagingPetRequest request);
@@ -40,4 +41,8 @@ public interface PetService {
   void addFollower(Long petId, Member memberBy);
   List<PetDto> toDto(List<Pet> pets);
 
+  void update(Member loginMember, Long petId, PetCreationRequest request);
+
+
+  void updateMainImage(Member loginMember, Long petId, MultipartFile image) throws FileUploadException;
 }

@@ -58,7 +58,7 @@ public class PetApi {
    * @return {@code ResponseEntity}.
    * @throws FileUploadException
    */
-  @PostMapping(value = "",
+  @PostMapping(value = "/with-image",
       consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE},
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Void> create(
@@ -69,6 +69,39 @@ public class PetApi {
 
     return new ResponseEntity<>(HttpStatus.CREATED);
   }
+
+  @PostMapping(value = "")
+  public ResponseEntity<Void> create(
+          @Valid @RequestBody PetCreationRequest request) throws FileUploadException {
+    Member loginMember = securityContextUtils.getLoginMember();
+    petService.create(request, loginMember);
+
+    return new ResponseEntity<>(HttpStatus.CREATED);
+  }
+
+
+
+  @PutMapping(value = "/{petId}")
+  public ResponseEntity<Void> update(
+          @PathVariable(value = "petId") final Long petId,
+          @Valid @RequestBody PetCreationRequest request) {
+    Member loginMember = securityContextUtils.getLoginMember();
+    petService.update(loginMember, petId, request);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+  @PutMapping(value = "/{petId}/main-image")
+  public ResponseEntity<Void> updateMainImage(
+          @PathVariable(value = "petId") final Long petId,
+          @RequestPart("main_image") MultipartFile image
+  ) throws FileUploadException {
+    Member loginMember = securityContextUtils.getLoginMember();
+    petService.updateMainImage(loginMember, petId, image);
+
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
+
 
   @GetMapping(value = "/list")
   public ResponseEntity<CommonPagingResponse<PetDto>> retrieveList(
