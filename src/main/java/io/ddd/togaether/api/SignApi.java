@@ -52,13 +52,13 @@ public class SignApi {
 
 
   /**
-   * admin 로그인 요청.
+   * <p> member 로그인 요청. </p>
    *
    * @param request 로그인 정보
    * @return {@code ResponseCommonWrapper} with {@link SignInResponse}.
    */
   @PostMapping(value = "/member", produces = APPLICATION_JSON_VALUE)
-  public ResponseEntity<SignInResponse> adminSignIn(
+  public ResponseEntity<SignInResponse> memberSignIn(
       @Valid @RequestBody final SignInRequest request) throws CredentialException {
 
     final String email = request.getEmail();
