@@ -26,7 +26,7 @@ import java.time.LocalDate;
 public class MemberFixture {
   public static SignupRequest memberForSignup1() {
     return SignupRequest.builder()
-        .email("jongsang@tagether.io")
+        .email("jongsang@togaether.io")
         .password("abcd1234")
         .name("Henry")
         .birth(LocalDate.of(1985,6,19))
@@ -35,7 +35,7 @@ public class MemberFixture {
 
   public static SignupRequest memberForSignup2() {
     return SignupRequest.builder()
-        .email("taein@tagether.io")
+        .email("taein@togaether.io")
         .password("abcd1234")
         .name("Denny")
         .birth(LocalDate.of(1999,1,1))
@@ -44,7 +44,7 @@ public class MemberFixture {
 
   public static SignupRequest memberForSignup3() {
     return SignupRequest.builder()
-        .email("jamit@tagether.io")
+        .email("jamit@togaether.io")
         .password("abcd1234")
         .name("Jamit")
         .birth(LocalDate.of(1995,11,11))
@@ -53,7 +53,7 @@ public class MemberFixture {
 
   public static SignupRequest memberForSignupTest() {
     return SignupRequest.builder()
-        .email("test@tagether.io")
+        .email("test@togaether.io")
         .password("Abcd!23$")
         .name("test")
         .birth(LocalDate.of(1999,1,1))
@@ -62,7 +62,7 @@ public class MemberFixture {
 
   public static MemberDto memberDto1() {
     return new MemberDto(1L,
-        "jongsang@tagether.io",
+        "jongsang@togaether.io",
         "Henry",
         LocalDate.of(1985,6,19)
         );

@@ -14,7 +14,7 @@ POST {{host}}:{{port}}/sign-in/member
 Content-Type: application/json
 
 {
-  "email": "jongsang@tagether.io",
+  "email": "jongsang@togaether.io",
   "password": "abcd1234"
 }
 
