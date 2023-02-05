@@ -114,3 +114,32 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 
+### 콘텐츠 작성
+POST {{host}}:{{port}}/pet/1/content
+Content-Type: multipart/form-data; boundary=boundary;
+Authorization: Bearer {{token}}
+
+
+--boundary
+Content-Disposition: form-data; name="image"; filename="retriever_for_content.png";
+
+< retriever_for_content.png
+
+--boundary
+Content-Disposition: form-data; name="content";
+Content-Type: application/json
+
+{
+  "content": "오늘 신나는 댕댕이 8일차 모습"
+}
+
+
+### 콘텐츠 조회
+GET {{host}}:{{port}}/pet/1/contents
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### 콘텐츠 이미지 조회
+GET {{host}}:{{port}}/pet/1/content-image
+Content-Type: application/json
+Authorization: Bearer {{token}}

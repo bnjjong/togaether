@@ -1,0 +1,25 @@
+ifndef::snippets[]
+:snippets: build/generated-snippets
+endif::[]
+
+= Togaether APIs
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:docinfo: shared-head
+
+[[introduction]]
+
+
+== APIs
+
+// window=_blank : 새 창에서 열림
+=== 1. link:common.html[common API, window=_blank]
+=== 2. link:member.html[Member API, window=_blank]
+=== 3. link:pet.html[Pet API, window=_blank]
+=== 4. link:sign.html[Sign API, window=_blank]
+
+

@@ -8,9 +8,8 @@
 
 package io.ddd.togaether.api;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -22,6 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import io.ddd.togaether.config.CommonApiUnitTest;
 import io.ddd.togaether.config.GlobalControllerExceptionHandler;
 import io.ddd.togaether.config.security.SecurityContextUtils;
+import io.ddd.togaether.dto.ContentCreationRequest;
+import io.ddd.togaether.dto.ContentResponse;
 import io.ddd.togaether.dto.paging.CommonPagingResponse;
 import io.ddd.togaether.dto.paging.PagingPetRequest;
 import io.ddd.togaether.dto.paging.PetOrderBy;
@@ -38,6 +39,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
@@ -54,6 +56,7 @@ import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequ
  * @since 1.0
  */
 class PetApiTest extends CommonApiUnitTest {
+
   private String baseUrl = "/pet";
 
   @MockBean
@@ -73,9 +76,10 @@ class PetApiTest extends CommonApiUnitTest {
   }
 
   @Nested
-  class PetCreate {
+  class PetCreateWithImage {
+
     @Test
-    @DisplayName("펫 등록")
+    @DisplayName("펫 등록 (이미지 포함)")
     void success() throws Exception {
       // given
       String requestBody = objectMapper.writeValueAsString(PetFixture.retrieverForCreation());
@@ -91,14 +95,86 @@ class PetApiTest extends CommonApiUnitTest {
 
       //when then
       mvc.perform(
-          ((MockMultipartHttpServletRequestBuilder)multipart(baseUrl)
-              .with(userToken()))
-              .file(mockFile)
-              .file(petUpload)
+              ((MockMultipartHttpServletRequestBuilder) multipart(baseUrl + "/with-image")
+                  .with(userToken()))
+                  .file(mockFile)
+                  .file(petUpload)
           )
           // then
           .andExpectAll(
               status().isCreated()
+          )
+          .andDo(print());
+    }
+  }
+
+
+  @Nested
+  class PetCreate {
+
+    @Test
+    @DisplayName("펫 등록")
+    void success() throws Exception {
+      // given
+      String requestBody = objectMapper.writeValueAsString(PetFixture.greyHoundForCreation());
+
+      //when then
+      mvc.perform(post(baseUrl).with(userToken())
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(requestBody))
+          // then
+          .andExpectAll(
+              status().isCreated()
+          )
+          .andDo(print());
+    }
+  }
+
+  @Nested
+  class PetUpdate {
+
+    @Test
+    @DisplayName("펫 정보 수정")
+    void success() throws Exception {
+      // given
+      Long petId = 1L;
+      String requestBody = objectMapper.writeValueAsString(PetFixture.greyHoundForUpdate());
+
+      //when then
+      mvc.perform(put(baseUrl + "/" + petId).with(userToken())
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(requestBody))
+          // then
+          .andExpectAll(
+              status().isOk()
+          )
+          .andDo(print());
+    }
+  }
+
+  @Nested
+  class PetUpdateMainImage {
+
+    @Test
+    @DisplayName("펫 메인 이미지 업로드")
+    void success() throws Exception {
+      // given
+      Long petId = 1L;
+      final File petPicture = new File("./src/test/resources/test-files/Retriever2.png");
+      final MockMultipartFile mockFile = new MockMultipartFile(
+          "main_image",
+          "Retriever2.png",
+          "image/png",
+          new FileInputStream(petPicture));
+
+      //when then
+      mvc.perform((
+              (MockMultipartHttpServletRequestBuilder)
+                  multipart(HttpMethod.PUT, baseUrl + "/" + petId + "/main-image").with(userToken()))
+              .file(mockFile))
+          // then
+          .andExpectAll(
+              status().isOk()
           )
           .andDo(print());
     }
@@ -116,13 +192,13 @@ class PetApiTest extends CommonApiUnitTest {
 
       given(petService.findPagingList(any())).willReturn(
           new CommonPagingResponse<>(
-              1,1,0,
+              1, 1, 0,
               List.of(PetFixture.retrieverDto())
           )
       );
 
       // when then
-      mvc.perform(get(baseUrl+"/list")
+      mvc.perform(get(baseUrl + "/list")
               .content(objectMapper.writeValueAsString(request))
               .contentType(MediaType.APPLICATION_JSON))
           // then
@@ -146,7 +222,7 @@ class PetApiTest extends CommonApiUnitTest {
       );
 
       // when then
-      mvc.perform(put(baseUrl+"/"+petId+"/follow")
+      mvc.perform(put(baseUrl + "/" + petId + "/follow")
               .with(userToken())
               .contentType(MediaType.APPLICATION_JSON)
           )
@@ -161,6 +237,7 @@ class PetApiTest extends CommonApiUnitTest {
 
   @Nested
   class PetRetrieveMainImage {
+
     @Test
     @DisplayName("펫 메인 이미지 조회")
     void success() throws Exception {
@@ -171,9 +248,100 @@ class PetApiTest extends CommonApiUnitTest {
       );
 
       //when then
-      mvc.perform(get(baseUrl+"/main-image/"+petId)
+      mvc.perform(get(baseUrl + "/main-image/" + petId)
 //              .contentType(MediaType.IMAGE_PNG_VALUE)
-              )
+          )
+          // then
+          .andExpectAll(
+              status().isOk(),
+              content().contentType(MediaType.IMAGE_PNG_VALUE)
+          )
+          .andDo(print());
+    }
+  }
+
+
+
+  @Nested
+  class PetCreateContent {
+
+    @Test
+    @DisplayName("펫 컨텐츠 작성")
+    void success() throws Exception {
+      // given
+      Long petId = 1L;
+      String requestBody = objectMapper.writeValueAsString(new ContentCreationRequest(
+          "the day is new day for me.!"));
+      final MockMultipartFile petUpload = new MockMultipartFile("content",
+          requestBody,
+          "application/json", requestBody.getBytes(StandardCharsets.UTF_8));
+      final File petPicture = new File("./src/test/resources/test-files/retriever_for_content.png");
+      final MockMultipartFile mockFile = new MockMultipartFile(
+          "image",
+          "retriever_for_content.png",
+          "image/png",
+          new FileInputStream(petPicture));
+
+      //when then
+      mvc.perform(
+              ((MockMultipartHttpServletRequestBuilder) multipart(baseUrl + "/" + petId+"/content")
+                  .with(userToken()))
+                  .file(mockFile)
+                  .file(petUpload)
+          )
+          // then
+          .andExpectAll(
+              status().isCreated()
+          )
+          .andDo(print());
+    }
+  }
+
+
+
+  @Nested
+  class PetRetrieveContents {
+
+    @Test
+    @DisplayName("펫 콘텐츠 조회(전체)")
+    void success() throws Exception {
+      // given
+      Long petId = 1L;
+
+      given(petService.findContents(any())).willReturn(
+          List.of(new ContentResponse(
+              "아기 댕댕이의 신나는 하루!",
+              "/pet/1/content-image"))
+      );
+
+      // when then
+      mvc.perform(get(baseUrl + "/"+petId+"/contents")
+              .contentType(MediaType.APPLICATION_JSON))
+          // then
+          .andExpectAll(
+              status().isOk()
+          )
+          .andDo(print());
+    }
+  }
+
+
+  @Nested
+  class PetRetrieveContentImage {
+
+    @Test
+    @DisplayName("펫 컨텐츠 이미지 조회")
+    void success() throws Exception {
+      // given
+      Long contentId = 1L;
+      given(petService.retrieveContentImagePath(contentId)).willReturn(
+          FileHelper.getFileFromResource("test/retriever_for_content.png").toString()
+      );
+
+      //when then
+      mvc.perform(get(baseUrl + "/"+contentId+"/content-image")
+              .contentType(MediaType.IMAGE_PNG_VALUE)
+          )
           // then
           .andExpectAll(
               status().isOk(),

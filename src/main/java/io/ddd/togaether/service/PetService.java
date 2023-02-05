@@ -8,6 +8,8 @@
 
 package io.ddd.togaether.service;
 
+import io.ddd.togaether.dto.ContentCreationRequest;
+import io.ddd.togaether.dto.ContentResponse;
 import io.ddd.togaether.dto.PetCreationRequest;
 import io.ddd.togaether.dto.PetDto;
 import io.ddd.togaether.dto.paging.CommonPagingResponse;
@@ -45,4 +47,11 @@ public interface PetService {
 
 
   void updateMainImage(Member loginMember, Long petId, MultipartFile image) throws FileUploadException;
+
+  void createContent(Long petId, ContentCreationRequest request, MultipartFile image)
+      throws FileUploadException;
+
+  List<ContentResponse> findContents(Long petId);
+
+  String retrieveContentImagePath(Long contentId);
 }

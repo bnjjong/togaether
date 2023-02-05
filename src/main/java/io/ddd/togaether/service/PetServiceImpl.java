@@ -1,12 +1,16 @@
 package io.ddd.togaether.service;
 
+ import io.ddd.togaether.dao.ContentRepository;
 import io.ddd.togaether.dao.FollowLogRepository;
 import io.ddd.togaether.dao.PetRepository;
+import io.ddd.togaether.dto.ContentCreationRequest;
+import io.ddd.togaether.dto.ContentResponse;
 import io.ddd.togaether.dto.PetCreationRequest;
 import io.ddd.togaether.dto.PetDto;
 import io.ddd.togaether.dto.mapper.PetMapper;
 import io.ddd.togaether.dto.paging.CommonPagingResponse;
 import io.ddd.togaether.dto.paging.PagingPetRequest;
+import io.ddd.togaether.model.Content;
 import io.ddd.togaether.model.FollowLog;
 import io.ddd.togaether.model.Member;
 import io.ddd.togaether.model.Pet;
@@ -45,6 +49,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class PetServiceImpl implements PetService {
 
   private final PetRepository petRepository;
+  private final ContentRepository contentRepository;
   private final FollowLogRepository followLogRepository;
 
   private final PetMapper petMapper;
@@ -65,15 +70,7 @@ public class PetServiceImpl implements PetService {
             + StringUtils.cleanPath(FileHelper.getFileNameServer(image)));
 
     // file upload
-    try {
-      File file = new File(uploadPath.toString());
-
-      // *** 파일 업로드
-      FileUtils.writeByteArrayToFile(file, image.getBytes());
-    } catch (Exception e) {
-      e.printStackTrace();
-      throw new FileUploadException("Could not store file : " + image.getOriginalFilename());
-    }
+    fileUpload(image, uploadPath);
 
     Pet pet = create(request, owner);
     pet.updateMainImage(uploadPath.toString());
@@ -128,18 +125,12 @@ public class PetServiceImpl implements PetService {
                     + StringUtils.cleanPath(FileHelper.getFileNameServer(image)));
 
     // file upload
-    try {
-      File file = new File(uploadPath.toString());
-
-      // *** 파일 업로드
-      FileUtils.writeByteArrayToFile(file, image.getBytes());
-    } catch (Exception e) {
-      e.printStackTrace();
-      throw new FileUploadException("Could not store file : " + image.getOriginalFilename());
-    }
+    fileUpload(image, uploadPath);
     pet.updateMainImage(uploadPath.toString());
 
   }
+
+
 
 
   @Override
@@ -182,7 +173,43 @@ public class PetServiceImpl implements PetService {
     );
   }
 
+  @Transactional
+  @Override
+  public void createContent(Long petId, ContentCreationRequest request, MultipartFile image)
+      throws FileUploadException {
+    Pet pet = petRepository.findById(petId)
+        .orElseThrow(() -> new EntityNotFoundException("pet id is not found : " + petId));
 
+    Path uploadPath = Paths.get(
+        uploadDir + File.separator
+            + "pet_"+ pet.getId() + File.separator
+            + StringUtils.cleanPath(FileHelper.getFileNameServer(image)));
+
+    // file upload
+    fileUpload(image, uploadPath);
+
+    pet.addContent(request.getContent(), uploadPath.toString());
+  }
+
+  @Override
+  public List<ContentResponse> findContents(Long petId) {
+    Pet pet = petRepository.findById(petId)
+        .orElseThrow(() -> new EntityNotFoundException("pet id is not found : " + petId));
+    return pet.getPetContent().stream()
+        .map(c -> new ContentResponse(
+            c.getContent(),
+            "/pet/" + c.getId() + "/content-image")
+        )
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public String retrieveContentImagePath(Long contentId) {
+    Content content = contentRepository.findById(contentId)
+        .orElseThrow(() -> new EntityNotFoundException("content is not exits by id : " + contentId));
+
+    return content.getImagePath();
+  }
 
 
   @Override
@@ -194,6 +221,18 @@ public class PetServiceImpl implements PetService {
           return petDto;
         })
         .collect(Collectors.toList());
+  }
+
+  private void fileUpload(MultipartFile image, Path uploadPath) throws FileUploadException {
+    try {
+      File file = new File(uploadPath.toString());
+
+      // *** 파일 업로드
+      FileUtils.writeByteArrayToFile(file, image.getBytes());
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new FileUploadException("Could not store file : " + image.getOriginalFilename());
+    }
   }
 
 

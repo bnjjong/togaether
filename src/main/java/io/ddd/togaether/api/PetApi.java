@@ -1,6 +1,8 @@
 package io.ddd.togaether.api;
 
 import io.ddd.togaether.config.security.SecurityContextUtils;
+import io.ddd.togaether.dto.ContentCreationRequest;
+import io.ddd.togaether.dto.ContentResponse;
 import io.ddd.togaether.dto.PetCreationRequest;
 import io.ddd.togaether.dto.PetDto;
 import io.ddd.togaether.dto.paging.CommonPagingResponse;
@@ -11,6 +13,7 @@ import jakarta.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
@@ -149,6 +152,46 @@ public class PetApi {
         .header(HttpHeaders.CONTENT_TYPE, mediaType.toString())
         .body(resource);
   }
+
+
+  @PostMapping(value = "/{petId}/content",
+      consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE},
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Void> createContent(
+      @PathVariable(value = "petId") final Long petId,
+      @RequestPart("content") @Valid ContentCreationRequest request,
+      @RequestPart("image") MultipartFile image
+  ) throws FileUploadException {
+    petService.createContent(petId, request, image);
+
+    return new ResponseEntity<>(HttpStatus.CREATED);
+  }
+
+  @GetMapping(value = "/{petId}/contents")
+  public ResponseEntity<List<ContentResponse>> retrieveContents(
+      @PathVariable(value = "petId") final Long petId
+  ) {
+    List<ContentResponse> contents = petService.findContents(petId);
+    return new ResponseEntity<>(contents, HttpStatus.OK);
+  }
+
+  @GetMapping(
+      value = "{contentId}/content-image",
+      produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE}
+  )
+  public ResponseEntity<Resource> retrieveContentImage(
+      @PathVariable(value = "contentId") final Long contentId
+  ) throws IOException {
+
+    String imagePath = petService.retrieveContentImagePath(contentId);
+    MediaType mediaType = MediaType.parseMediaType(Files.probeContentType(Paths.get(imagePath)));
+    UrlResource resource = new UrlResource("file:" + imagePath);
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_TYPE, mediaType.toString())
+        .body(resource);
+  }
+
+
 
 
 }

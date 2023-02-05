@@ -43,6 +43,31 @@ public class PetFixture {
     );
   }
 
+
+  public static PetCreationRequest greyHoundForCreation() {
+    return new PetCreationRequest(
+        "그레이",
+        Species.GREY_HOUND,
+        Character.LITTLE_TIMID,
+        Gender.FEMALE,
+        LocalDate.of(2019,5,20),
+        "조용하지만 매우 친절해요.",
+        ""
+    );
+  }
+
+  public static PetCreationRequest greyHoundForUpdate() {
+    return new PetCreationRequest(
+        "그레이",
+        Species.GREY_HOUND,
+        Character.LITTLE_TIMID,
+        Gender.FEMALE,
+        LocalDate.of(2019,5,19),
+        "조용하지만 매우 친절해요.",
+        ""
+    );
+  }
+
   public static PetDto retrieverDto() {
     return new PetDto(1L,"동력이",Species.GOLDEN_RETRIEVER, Character.ENERGETIC,
         Gender.MALE,

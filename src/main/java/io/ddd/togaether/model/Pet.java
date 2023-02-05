@@ -88,6 +88,10 @@ public class Pet extends AuditEntity {
   @ToString.Exclude
   private List<PetImage> petImages;
 
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pet")
+  @ToString.Exclude
+  private List<Content> petContent;
+
   /**
    * 강아지 설명(특징)
    */
@@ -143,6 +147,10 @@ public class Pet extends AuditEntity {
   }
   public void updateMainImage(String mainImage) {
     this.mainImage = mainImage;
+  }
+
+  public void addContent(String content, String imagePath) {
+    this.petContent.add(new Content(this, content, imagePath));
   }
 
 }
