@@ -23,6 +23,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
@@ -41,13 +43,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners({AuditingEntityListener.class})
+@Where(clause = "active = 1")
+@DynamicUpdate
 public class Member extends AuditEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
   private String email;
 
   @Column(nullable = false)
@@ -79,6 +83,9 @@ public class Member extends AuditEntity {
   @ToString.Exclude
   private Set<Pet> following = new HashSet<>();
 
+  @Column(nullable = false)
+  private boolean active = true;
+
 
   @Builder
   public Member(@NonNull String email, @NonNull String password, @NonNull String name,
@@ -98,5 +105,12 @@ public class Member extends AuditEntity {
 
   public void updateProfilePicture(String profilePicturePath) {
     this.profilePicturePath = profilePicturePath;
+  }
+
+  /**
+   * 회원 탈퇴
+   */
+  public void withdraw() {
+    this.active = false;
   }
 }

@@ -31,10 +31,19 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface MemberService {
 
+  /**
+   * <p> 회원 가입 </p>
+   * @param request 가입 요청 DTO
+   * @return
+   */
   MemberDto create(SignupRequest request);
   MemberDto findByEmail(String email);
   void uploadProfilePicture(Member member, MultipartFile profile) throws FileUploadException;
   InputStream retrieveMyProfilePictureInputStream(Member member) throws FileNotFoundException;
   List<PetDto> findMyPets(Member loginMember);
+
+  void withdraw(Member member);
+
+
 
 }

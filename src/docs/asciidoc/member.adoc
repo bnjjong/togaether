@@ -25,3 +25,7 @@ include::{snippets}/member-retrieve-profile-picture/success/auto-section.adoc[]
 
 == `R` 본인 전체 펫 조회 (로그인 한 사용자)
 include::{snippets}/member-retrieve-all-my-pets/success/auto-section.adoc[]
+
+== `D` 회원 탈퇴 (로그인 한 사용자)
+삭제 하지는 않고 일단 active = false 처리 한다.
+include::{snippets}/member-withdraw/success/auto-section.adoc[]

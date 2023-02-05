@@ -17,10 +17,12 @@ import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -110,5 +112,10 @@ public class MemberServiceImpl implements MemberService{
     return petService.toDto(pets);
   }
 
-
+  @Transactional
+  @Override
+  public void withdraw(Member member) {
+    Member member1 = repository.findByEmail(member.getEmail()).get();
+    member1.withdraw();
+  }
 }

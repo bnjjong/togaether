@@ -175,7 +175,7 @@ class MemberApiTest extends CommonApiUnitTest {
           objectMapper.convertValue(MemberFixture.memberForSignupTest(), Member.class)
       );
       given(memberService.retrieveMyProfilePictureInputStream(any())).willReturn(
-          new FileInputStream("/Users/hanjongsang/github/togaether/build/resources/main/test/profile1.jpeg")
+          new FileInputStream("./src/test/resources/test-files/profile.png")
       );
 
       //when then
@@ -214,6 +214,23 @@ class MemberApiTest extends CommonApiUnitTest {
           .andExpectAll(
               status().isOk(),
               content().contentType(MediaType.APPLICATION_JSON)
+          )
+          .andDo(print());
+    }
+  }
+
+
+  @Nested
+  class MemberWithdraw {
+    @Test
+    @DisplayName("회원 탈퇴")
+    void success() throws Exception {
+
+      //when then
+      mvc.perform(post(baseUrl+"/withdraw").with(userToken()))
+          // then
+          .andExpectAll(
+              status().isOk()
           )
           .andDo(print());
     }

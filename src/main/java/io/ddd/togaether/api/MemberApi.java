@@ -118,4 +118,15 @@ public class MemberApi {
     return new ResponseEntity<>(pets, HttpStatus.OK);
   }
 
+  /**
+   * <p> 회원 탈퇴 한다. </p>
+   *
+   * @return
+   */
+  @PostMapping(value="/withdraw")
+  public ResponseEntity<Void> withdraw() {
+    memberService.withdraw(securityContextUtils.getLoginMember());
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
+
 }

@@ -52,3 +52,8 @@ Authorization: Bearer {{token}}
 GET {{host}}:{{port}}/member/my-pets
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+### 회원 탈퇴
+POST {{host}}:{{port}}/member/withdraw
+Content-Type: application/json
+Authorization: Bearer {{token}}
