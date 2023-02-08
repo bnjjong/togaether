@@ -10,7 +10,9 @@ import io.ddd.togaether.service.MemberService;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -113,9 +115,11 @@ public class MemberApi {
    * @return {@code ResponseEntity}
    */
   @GetMapping(value = "/my-pets")
-  public ResponseEntity<List<PetDto>> retrieveAllMyPets() {
+  public ResponseEntity<Map<String, List<PetDto>>> retrieveAllMyPets() {
     List<PetDto> pets = memberService.findMyPets(securityContextUtils.getLoginMember());
-    return new ResponseEntity<>(pets, HttpStatus.OK);
+    Map<String, List<PetDto>> result = new HashMap<>();
+    result.put("rows", pets);
+    return new ResponseEntity<>(result, HttpStatus.OK);
   }
 
   /**

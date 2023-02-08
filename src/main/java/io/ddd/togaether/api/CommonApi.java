@@ -1,10 +1,13 @@
 package io.ddd.togaether.api;
 
 import io.ddd.togaether.dto.CharacterDto;
+import io.ddd.togaether.dto.PetDto;
 import io.ddd.togaether.dto.SpeciesDto;
 import io.ddd.togaether.model.Character;
 import io.ddd.togaether.model.Species;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,12 +40,15 @@ public class CommonApi {
    * @return {@code ResponseEntity}
    */
   @GetMapping("/species-all")
-  public ResponseEntity<List<SpeciesDto>> retrieveAllSpecies() {
+  public ResponseEntity<Map<String, List<SpeciesDto>>> retrieveAllSpecies() {
     List<SpeciesDto> speciesDtos = Species.getAll().stream()
         .map(s -> new SpeciesDto(s.toString(), s.getKorName(), s.getIndexCode()))
         .collect(Collectors.toList());
 
-    return new ResponseEntity<>(speciesDtos, HttpStatus.OK);
+    Map<String, List<SpeciesDto>> result = new HashMap<>();
+    result.put("rows", speciesDtos);
+
+    return new ResponseEntity<>(result, HttpStatus.OK);
   }
 
   /**
@@ -52,15 +58,17 @@ public class CommonApi {
    * @return {@code ResponseEntity}
    */
   @GetMapping("/species/{keyword}")
-  public ResponseEntity<List<SpeciesDto>> retrieveSpecies(
+  public ResponseEntity<Map<String,List<SpeciesDto>>> retrieveSpecies(
       @PathVariable(value = "keyword" ) final String keyword
   ) {
     List<SpeciesDto> speciesDtos = Species.getAll().stream()
         .filter(s -> s.getKorName().contains(keyword) || s.getIndexCode().equals(keyword))
         .map(s -> new SpeciesDto(s.toString(), s.getKorName(), s.getIndexCode()))
         .collect(Collectors.toList());
+    Map<String, List<SpeciesDto>> result = new HashMap<>();
+    result.put("rows", speciesDtos);
 
-    return new ResponseEntity<>(speciesDtos, HttpStatus.OK);
+    return new ResponseEntity<>(result, HttpStatus.OK);
   }
 
 
@@ -70,12 +78,14 @@ public class CommonApi {
    * @return {@code ResponseEntity}
    */
   @GetMapping("/characters-all")
-  public ResponseEntity<List<CharacterDto>> retrieveAllCharacters() {
+  public ResponseEntity<Map<String,List<CharacterDto>>> retrieveAllCharacters() {
     List<CharacterDto> characters = Character.getAll().stream()
         .map(c -> new CharacterDto(c.toString(), c.getKorText()))
         .collect(Collectors.toList());
+    Map<String, List<CharacterDto>> result = new HashMap<>();
+    result.put("rows", characters);
 
-    return new ResponseEntity<>(characters, HttpStatus.OK);
+    return new ResponseEntity<>(result, HttpStatus.OK);
   }
 
 }
