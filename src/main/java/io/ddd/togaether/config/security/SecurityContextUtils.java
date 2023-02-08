@@ -46,6 +46,7 @@ public class SecurityContextUtils {
         });
     // loading.
     member.getPets();
+    member.getFollowing();
     return member;
 //    return memberRepository.findByEmail("jongsang@naver.com")
 //        .orElseThrow(() -> {

@@ -69,13 +69,24 @@ public class PetFixture {
   }
 
   public static PetDto retrieverDto() {
+
     return new PetDto(1L,"동력이",Species.GOLDEN_RETRIEVER, Character.ENERGETIC,
         Gender.MALE,
         LocalDate.of(2020,1,20),
-        "",
+        "/pet/main-image/1",
         "꼬리로 하늘을 날수 있음.",
         "",
         10);
+  }
+
+  public static PetDto greyHoundDto() {
+    return new PetDto(2L,"그레이",Species.GREY_HOUND, Character.LITTLE_TIMID,
+        Gender.FEMALE,
+        LocalDate.of(2019,5,20),
+        "/pet/main-image/2",
+        "조용하지만 매우 친절해요.",
+        "",
+        2);
   }
 
 

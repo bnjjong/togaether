@@ -6,6 +6,7 @@ import io.ddd.togaether.dto.ContentResponse;
 import io.ddd.togaether.dto.PetCreationRequest;
 import io.ddd.togaether.dto.PetDto;
 import io.ddd.togaether.dto.paging.CommonPagingResponse;
+import io.ddd.togaether.dto.paging.PagingCommonImplRequest;
 import io.ddd.togaether.dto.paging.PagingPetRequest;
 import io.ddd.togaether.model.Member;
 import io.ddd.togaether.service.PetService;
@@ -13,7 +14,9 @@ import jakarta.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
@@ -23,6 +26,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -113,6 +117,20 @@ public class PetApi {
     CommonPagingResponse<PetDto> pets = petService.findPagingList(request);
     return new ResponseEntity<>(pets, HttpStatus.OK);
   }
+
+  @GetMapping(value = "/my-following")
+  @Transactional
+  public ResponseEntity<Map<String,List<PetDto>>> retrieveFollowing(
+  ) {
+    Member member = securityContextUtils.getLoginMember();
+    List<PetDto> petDtos = petService.retrieveFollowing(member);
+    Map<String, List<PetDto>> result = new HashMap<>();
+    result.put("rows", petDtos);
+
+    return new ResponseEntity<>(result, HttpStatus.OK);
+  }
+
+
 
   /**
    * <p> 해당 펫을 팔로우 한다. </p>

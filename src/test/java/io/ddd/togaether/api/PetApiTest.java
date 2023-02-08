@@ -210,6 +210,30 @@ class PetApiTest extends CommonApiUnitTest {
   }
 
   @Nested
+  class PetRetrieveFollowing {
+
+    @Test
+    @DisplayName("내가 팔로우 중인 펫 조회")
+    void success() throws Exception {
+      // given
+      given(petService.retrieveFollowing(any())).willReturn(
+            List.of(PetFixture.retrieverDto(), PetFixture.greyHoundDto())
+      );
+
+      // when then
+      mvc.perform(get(baseUrl + "/my-following")
+              .with(userToken())
+              .contentType(MediaType.APPLICATION_JSON))
+          // then
+          .andExpectAll(
+              status().isOk()
+          )
+          .andDo(print());
+    }
+  }
+
+
+  @Nested
   class PetFollow {
 
     @Test

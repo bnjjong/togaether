@@ -1,6 +1,6 @@
 package io.ddd.togaether.service;
 
- import io.ddd.togaether.dao.ContentRepository;
+import io.ddd.togaether.dao.ContentRepository;
 import io.ddd.togaether.dao.FollowLogRepository;
 import io.ddd.togaether.dao.PetRepository;
 import io.ddd.togaether.dto.ContentCreationRequest;
@@ -20,6 +20,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -152,6 +153,16 @@ public class PetServiceImpl implements PetService {
     );
   }
 
+  @Override
+  public List<PetDto> retrieveFollowing(Member member) {
+    Set<Pet> pets = member.getFollowing();
+    return pets.stream()
+        .map(p -> petMapper.toDto(p))
+        .collect(Collectors.toList());
+  }
+
+
+
 
 
   @Override
@@ -210,6 +221,8 @@ public class PetServiceImpl implements PetService {
 
     return content.getImagePath();
   }
+
+
 
 
   @Override

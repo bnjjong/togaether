@@ -54,4 +54,6 @@ public interface PetService {
   List<ContentResponse> findContents(Long petId);
 
   String retrieveContentImagePath(Long contentId);
+
+  List<PetDto> retrieveFollowing(Member member);
 }
